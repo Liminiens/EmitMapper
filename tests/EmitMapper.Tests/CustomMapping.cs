@@ -40,10 +40,10 @@ namespace EmitMapper.Tests
         public void Test_CustomConverter()
         {
             A2 a = Context.objMan.GetMapper<B2, A2>(
-				new DefaultMapConfig()
-                    .ConvertUsing<object, string>( v => "333" )
-                    .ConvertUsing<object, string>( v => "hello" )
-					.SetConfigName("ignore")
+                new DefaultMapConfig()
+                    .ConvertUsing<object, string>(v => "333")
+                    .ConvertUsing<object, string>(v => "hello")
+                    .SetConfigName("ignore")
             ).Map(new B2());
             Assert.True(a.fld1 == null);
             Assert.Equal("hello", a.fld2);
@@ -52,27 +52,27 @@ namespace EmitMapper.Tests
             Assert.Equal("B2::fld2", a.fld2);
         }
 
-		public class AA
-		{
-			public string fld1;
-			public string fld2;
-		}
+        public class AA
+        {
+            public string fld1;
+            public string fld2;
+        }
 
-		public class BB
-		{
-			public string fld1 = "B2::fld1";
-			public string fld2 = "B2::fld2";
-		}
+        public class BB
+        {
+            public string fld1 = "B2::fld1";
+            public string fld2 = "B2::fld2";
+        }
 
-		[Fact]
-		public void Test_CustomConverter2()
-		{
-			AA a = Context.objMan.GetMapper<BB, AA>(
-				new DefaultMapConfig().ConvertUsing<object, string>(v => "converted " + v.ToString())
-			).Map(new BB());
-			Assert.Equal("converted B2::fld1", a.fld1);
-			Assert.Equal("converted B2::fld2", a.fld2);
-		}
+        [Fact]
+        public void Test_CustomConverter2()
+        {
+            AA a = Context.objMan.GetMapper<BB, AA>(
+                new DefaultMapConfig().ConvertUsing<object, string>(v => "converted " + v.ToString())
+            ).Map(new BB());
+            Assert.Equal("converted B2::fld1", a.fld1);
+            Assert.Equal("converted B2::fld2", a.fld2);
+        }
 
         public class A3
         {
@@ -118,7 +118,7 @@ namespace EmitMapper.Tests
             A3 a = Context.objMan.GetMapper<B3, A3>(
                 new DefaultMapConfig()
                     .PostProcess<A3.Int>((i, state) => { i.str2 = "processed"; return i; })
-                    .PostProcess<A3.SInt?>((i, state) => { return new A3.SInt() { str1 = i.Value.str1, str2 = "processed" }; })
+                    .PostProcess<A3.SInt?>((i, state) => new A3.SInt() { str1 = i.Value.str1, str2 = "processed" })
                     .PostProcess<A3>((i, state) => { i.status = "processed"; return i; })
             ).Map(new B3());
             Assert.Equal("B3::Int::str1", a.fld.str1);

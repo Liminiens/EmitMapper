@@ -17,7 +17,7 @@ namespace EmitMapper.NetStandard.Mappers
     /// </summary>
     internal class MapperForCollectionImpl : CustomMapperImpl
     {
-		private ObjectsMapperDescr subMapper;
+        private ObjectsMapperDescr subMapper;
 
         /// <summary>
         /// Copies object properties and members of "from" to object "to"
@@ -27,13 +27,10 @@ namespace EmitMapper.NetStandard.Mappers
         /// <returns>Destination object</returns>
         public override object MapImpl(object from, object to, object state)
         {
-			if (to == null)
-			{
-				if (_targetConstructor != null)
-				{
-                    to = _targetConstructor.CallFunc();
-				}
-			}
+            if (to == null && _targetConstructor != null)
+            {
+                to = _targetConstructor.CallFunc();
+            }
 
             if (typeTo.IsArray)
             {
@@ -41,7 +38,7 @@ namespace EmitMapper.NetStandard.Mappers
                 {
                     return CopyToArray((IEnumerable)from);
                 }
-                else 
+                else
                 {
                     return CopyScalarToArray(from);
                 }
@@ -69,37 +66,37 @@ namespace EmitMapper.NetStandard.Mappers
                 }
 
             }
-			else if (typeof(IList).IsAssignableFrom(typeTo))
-			{
-				return CopyToIList((IList)to, from);
-			}
+            else if (typeof(IList).IsAssignableFrom(typeTo))
+            {
+                return CopyToIList((IList)to, from);
+            }
             return null;
         }
 
-		private object CopyToIList(IList iList, object from)
-		{
-			if (iList == null)
-			{
-				iList = (IList)Activator.CreateInstance(typeTo);
-			}
-			foreach (object obj in (from is IEnumerable ? (IEnumerable)from : new[]{from}))
-			{
-				if (obj == null)
-				{
-					iList.Add(null);
-				}
-				if (_rootOperation == null || _rootOperation.ShallowCopy)
-				{
-					iList.Add(obj);
-				}
-				else
-				{
-					ObjectsMapperBaseImpl Mapper = mapperMannager.GetMapperImpl(obj.GetType(), obj.GetType(), _mappingConfigurator);
-					iList.Add(Mapper.Map(obj));
-				}
-			}
-			return iList;
-		}
+        private object CopyToIList(IList iList, object from)
+        {
+            if (iList == null)
+            {
+                iList = (IList)Activator.CreateInstance(typeTo);
+            }
+            foreach (object obj in (from is IEnumerable ? (IEnumerable)from : new[] { from }))
+            {
+                if (obj == null)
+                {
+                    iList.Add(null);
+                }
+                if (_rootOperation == null || _rootOperation.ShallowCopy)
+                {
+                    iList.Add(obj);
+                }
+                else
+                {
+                    ObjectsMapperBaseImpl Mapper = mapperMannager.GetMapperImpl(obj.GetType(), obj.GetType(), _mappingConfigurator);
+                    iList.Add(Mapper.Map(obj));
+                }
+            }
+            return iList;
+        }
 
         /// <summary>
         /// Copies object properties and members of "from" to object "to"
@@ -109,7 +106,7 @@ namespace EmitMapper.NetStandard.Mappers
         /// <returns>Destination object</returns>
         public override object Map(object from, object to, object state)
         {
-			return base.Map(from, null, state);
+            return base.Map(from, null, state);
         }
 
         /// <summary>
@@ -119,14 +116,14 @@ namespace EmitMapper.NetStandard.Mappers
         /// <returns></returns>
         internal static bool IsSupportedType(Type type)
         {
-            return 
+            return
                 type.IsArray ||
                 type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) ||
                 type == typeof(ArrayList) ||
-				typeof(IList).IsAssignableFrom(type) ||
-				typeof(IList<>).IsAssignableFrom(type)
+                typeof(IList).IsAssignableFrom(type) ||
+                typeof(IList<>).IsAssignableFrom(type)
                 ;
-			
+
         }
 
         /// <summary>
@@ -143,7 +140,7 @@ namespace EmitMapper.NetStandard.Mappers
             ObjectMapperManager mapperMannager,
             Type TypeFrom,
             Type TypeTo,
-			ObjectsMapperDescr SubMapper,
+            ObjectsMapperDescr SubMapper,
             IMappingConfigurator mappingConfigurator
             )
         {
@@ -152,33 +149,33 @@ namespace EmitMapper.NetStandard.Mappers
                 typeof(MapperForCollectionImpl)
                 );
 
-			if (TypeTo.IsGenericType && TypeTo.GetGenericTypeDefinition() == typeof(List<>))
-			{
-				MethodBuilder methodBuilder = tb.DefineMethod(
-					"CopyToListInvoke",
-					MethodAttributes.Family | MethodAttributes.Virtual,
-					typeof(object),
-					new Type[] { typeof(IEnumerable) }
-					);
+            if (TypeTo.IsGenericType && TypeTo.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                MethodBuilder methodBuilder = tb.DefineMethod(
+                    "CopyToListInvoke",
+                    MethodAttributes.Family | MethodAttributes.Virtual,
+                    typeof(object),
+                    new Type[] { typeof(IEnumerable) }
+                    );
 
-				InvokeCopyImpl(TypeTo, "CopyToList").Compile(new CompilationContext(methodBuilder.GetILGenerator()));
+                InvokeCopyImpl(TypeTo, "CopyToList").Compile(new CompilationContext(methodBuilder.GetILGenerator()));
 
-				methodBuilder = tb.DefineMethod(
-					"CopyToListScalarInvoke",
-					MethodAttributes.Family | MethodAttributes.Virtual,
-					typeof(object),
-					new Type[] { typeof(object) }
-					);
+                methodBuilder = tb.DefineMethod(
+                    "CopyToListScalarInvoke",
+                    MethodAttributes.Family | MethodAttributes.Virtual,
+                    typeof(object),
+                    new Type[] { typeof(object) }
+                    );
 
-				InvokeCopyImpl(TypeTo, "CopyToListScalar").Compile(
-					new CompilationContext(methodBuilder.GetILGenerator())
-					);
-			}
+                InvokeCopyImpl(TypeTo, "CopyToListScalar").Compile(
+                    new CompilationContext(methodBuilder.GetILGenerator())
+                    );
+            }
 
             MapperForCollectionImpl result = (MapperForCollectionImpl)Activator.CreateInstance(tb.CreateTypeInfo().AsType());
-			result.Initialize(mapperMannager, TypeFrom, TypeTo, mappingConfigurator, null);
+            result.Initialize(mapperMannager, TypeFrom, TypeTo, mappingConfigurator, null);
             result.subMapper = SubMapper;
-			
+
             return result;
         }
 
@@ -186,21 +183,25 @@ namespace EmitMapper.NetStandard.Mappers
         {
             var mi = typeof(MapperForCollectionImpl).GetMethod(
                copyMethodName,
-               BindingFlags.Instance | BindingFlags.NonPublic
+               BindingFlags.Instance | BindingFlags.Public
             ).MakeGenericMethod(new Type[] { ExtractElementType(copiedObjectType) });
 
             return new AstReturn()
-                       {
-                           ReturnType = typeof(object),
-                           ReturnValue = AstBuildHelper.CallMethod(
+            {
+                ReturnType = typeof(object),
+                ReturnValue = AstBuildHelper.CallMethod(
                                mi,
                                AstBuildHelper.ReadThis(typeof(MapperForCollectionImpl)),
                                new List<IAstStackItem>
                                    {
-                                       new AstReadArgumentRef(){ArgumentIndex = 1, ArgumentType = typeof(object)}
+                                       new AstReadArgumentRef()
+                                       {
+                                           ArgumentIndex = 1,
+                                           ArgumentType = typeof(object)
+                                       }
                                    }
                                )
-                       };
+            };
         }
 
         private static Type ExtractElementType(Type collection)
@@ -226,7 +227,7 @@ namespace EmitMapper.NetStandard.Mappers
             return ExtractElementType(to);
         }
 
-        internal static Type GetSubMapperTypeFrom(Type from) 
+        internal static Type GetSubMapperTypeFrom(Type from)
         {
             Type result = ExtractElementType(from);
             if (result == null)
@@ -241,8 +242,8 @@ namespace EmitMapper.NetStandard.Mappers
         {
             return null;
         }
-        
-        protected MapperForCollectionImpl() :base(null, null, null, null, null)
+
+        protected MapperForCollectionImpl() : base(null, null, null, null, null)
         {
         }
 
@@ -286,7 +287,7 @@ namespace EmitMapper.NetStandard.Mappers
                         res.Add(obj);
                     }
                     return res;
-                }				
+                }
             }
 
             ArrayList result = new ArrayList();
@@ -301,7 +302,7 @@ namespace EmitMapper.NetStandard.Mappers
 
             foreach (object obj in from)
             {
-                if(obj == null)
+                if (obj == null)
                 {
                     result.Add(null);
                 }
