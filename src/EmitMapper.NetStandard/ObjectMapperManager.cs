@@ -189,9 +189,9 @@ namespace EmitMapper.NetStandard
 			);
 			mappingBuilder.BuildCopyImplMethod();
 
-			ObjectsMapperBaseImpl result =
+            ObjectsMapperBaseImpl result =
 				(ObjectsMapperBaseImpl)Activator.CreateInstance(typeBuilder.CreateTypeInfo().AsType());
-			result.Initialize(this, from, to, mappingConfigurator, mappingBuilder.storedObjects.ToArray());
+			result.Initialize(this, from, to, mappingConfigurator, mappingBuilder.StoredObjects.ToArray());
 			return result;
 		}
 

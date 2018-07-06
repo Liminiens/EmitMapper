@@ -60,11 +60,11 @@ namespace EmitMapper.NetStandard.Mappers
             return Map(from, to, null);
         }
 
-		public IMappingConfigurator MappingConfigurator
+        public IMappingConfigurator MappingConfigurator
         {
             get
             {
-				return _mappingConfigurator;
+                return _mappingConfigurator;
             }
         }
 
@@ -97,18 +97,18 @@ namespace EmitMapper.NetStandard.Mappers
         /// <param name="from">Source object</param>
         /// <param name="to">Destination object</param>
         /// <returns>Destination object</returns>
-        internal abstract object MapImpl(object from, object to, object state);
+        public abstract object MapImpl(object from, object to, object state);
 
         /// <summary>
         /// Creates an instance of destination object
         /// </summary>
         /// <returns>Destination object</returns>
-        internal abstract object CreateTargetInstance();
+        public abstract object CreateTargetInstance();
 
-		protected IMappingConfigurator _mappingConfigurator;
-		protected IRootMappingOperation _rootOperation;
+        protected IMappingConfigurator _mappingConfigurator;
+        protected IRootMappingOperation _rootOperation;
 
-		public object[] StroredObjects;
+        public object[] StroredObjects;
 
         protected DelegateInvokerFunc_0 _targetConstructor;
         protected DelegateInvokerFunc_0 _nullSubstitutor;
@@ -116,25 +116,25 @@ namespace EmitMapper.NetStandard.Mappers
         protected DelegateInvokerFunc_2 _valuesPostProcessor;
 
         internal void Initialize(
-            ObjectMapperManager MapperMannager, 
-            Type TypeFrom, 
-            Type TypeTo, 
-			IMappingConfigurator mappingConfigurator,
-			object[] stroredObjects)
+            ObjectMapperManager MapperMannager,
+            Type TypeFrom,
+            Type TypeTo,
+            IMappingConfigurator mappingConfigurator,
+            object[] stroredObjects)
         {
             mapperMannager = MapperMannager;
             typeFrom = TypeFrom;
             typeTo = TypeTo;
-			_mappingConfigurator = mappingConfigurator;
-			StroredObjects = stroredObjects;
-			if (_mappingConfigurator != null)
-			{
-				_rootOperation = _mappingConfigurator.GetRootMappingOperation(TypeFrom, TypeTo);
-				if (_rootOperation == null)
-				{
-					_rootOperation = new RootMappingOperation(TypeFrom, TypeTo);
-				}
-				var constructor = _rootOperation.TargetConstructor;
+            _mappingConfigurator = mappingConfigurator;
+            StroredObjects = stroredObjects;
+            if (_mappingConfigurator != null)
+            {
+                _rootOperation = _mappingConfigurator.GetRootMappingOperation(TypeFrom, TypeTo);
+                if (_rootOperation == null)
+                {
+                    _rootOperation = new RootMappingOperation(TypeFrom, TypeTo);
+                }
+                var constructor = _rootOperation.TargetConstructor;
                 if (constructor != null)
                 {
                     _targetConstructor = (DelegateInvokerFunc_0)DelegateInvoker.GetDelegateInvoker(constructor);
@@ -157,14 +157,14 @@ namespace EmitMapper.NetStandard.Mappers
                 {
                     _nullSubstitutor = (DelegateInvokerFunc_0)DelegateInvoker.GetDelegateInvoker(nullSubstitutor);
                 }
-			}
+            }
         }
 
         protected object ConstructTarget()
         {
             if (_targetConstructor != null)
             {
-				return _targetConstructor.CallFunc();
+                return _targetConstructor.CallFunc();
             }
             return CreateTargetInstance();
         }

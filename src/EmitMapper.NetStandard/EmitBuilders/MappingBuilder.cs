@@ -49,7 +49,7 @@ namespace EmitMapper.NetStandard.EmitBuilders
 
 			MethodBuilder methodBuilder = _typeBuilder.DefineMethod(
 				"MapImpl",
-				MethodAttributes.FamORAssem | MethodAttributes.Virtual,
+				MethodAttributes.Public | MethodAttributes.Virtual,
 				typeof(object),
 				new Type[] { typeof(object), typeof(object), typeof(object) }
 				);
@@ -75,17 +75,17 @@ namespace EmitMapper.NetStandard.EmitBuilders
             mapperAst.Nodes.Add(
 				new MappingOperationsProcessor()
 				{
-					locException = locException,
-					locFrom = locFrom,
-					locState = locState,
-					locTo = locTo,
-					objectsMapperManager = _objectsMapperManager,
-					compilationContext = compilationContext,
-					storedObjects = StoredObjects,
-					operations = mappingOperations,
-					mappingConfigurator = _mappingConfigurator,
-					rootOperation = _mappingConfigurator.GetRootMappingOperation(_from, _to),
-					staticConvertersManager = staticConverter ?? StaticConvertersManager.DefaultInstance
+					LocException = locException,
+					LocFrom = locFrom,
+					LocState = locState,
+					LocTo = locTo,
+					ObjectsMapperManager = _objectsMapperManager,
+					CompilationContext = compilationContext,
+					StoredObjects = StoredObjects,
+					Operations = mappingOperations,
+					MappingConfigurator = _mappingConfigurator,
+					RootOperation = _mappingConfigurator.GetRootMappingOperation(_from, _to),
+					StaticConvertersManager = staticConverter ?? StaticConvertersManager.DefaultInstance
 				}.ProcessOperations()
 			);
 			mapperAst.Nodes.Add(
