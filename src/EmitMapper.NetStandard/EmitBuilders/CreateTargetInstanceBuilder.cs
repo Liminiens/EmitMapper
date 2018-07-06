@@ -20,7 +20,7 @@ namespace EmitMapper.NetStandard.EmitBuilders
 
             MethodBuilder methodBuilder = typeBuilder.DefineMethod(
                 "CreateTargetInstance",
-                MethodAttributes.Assembly | MethodAttributes.Virtual,
+                MethodAttributes.Public | MethodAttributes.Virtual,
                 typeof(object),
                 null
                 );

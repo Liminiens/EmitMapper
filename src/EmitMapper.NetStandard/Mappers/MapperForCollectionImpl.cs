@@ -25,7 +25,7 @@ namespace EmitMapper.NetStandard.Mappers
         /// <param name="from">Source object</param>
         /// <param name="to">Destination object</param>
         /// <returns>Destination object</returns>
-        internal override object MapImpl(object from, object to, object state)
+        public override object MapImpl(object from, object to, object state)
         {
 			if (to == null)
 			{
@@ -237,7 +237,7 @@ namespace EmitMapper.NetStandard.Mappers
             return result;
         }
 
-        internal override object CreateTargetInstance()
+        public override object CreateTargetInstance()
         {
             return null;
         }

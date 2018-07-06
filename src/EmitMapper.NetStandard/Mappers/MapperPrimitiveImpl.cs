@@ -37,7 +37,7 @@ namespace EmitMapper.NetStandard.Mappers
 		/// <param name="from">Source object</param>
 		/// <param name="to">Destination object</param>
 		/// <returns>Destination object</returns>
-		internal override object MapImpl(object from, object to, object state)
+		public override object MapImpl(object from, object to, object state)
 		{
 			if (_converter == null)
 			{
@@ -50,7 +50,7 @@ namespace EmitMapper.NetStandard.Mappers
 		/// Creates an instance of destination object
 		/// </summary>
 		/// <returns>Destination object</returns>
-		internal override object CreateTargetInstance()
+		public override object CreateTargetInstance()
 		{
 			return null;
 		}
