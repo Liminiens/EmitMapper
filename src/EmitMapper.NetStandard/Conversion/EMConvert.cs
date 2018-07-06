@@ -38,12 +38,7 @@ namespace EmitMapper.NetStandard.Conversion
 				{
 					return value.ToString();
 				}
-
-#if SILVERLIGHT
-                return ChangeType(ConvertSL.ChangeType(value, Enum.GetUnderlyingType(typeFrom)), Enum.GetUnderlyingType(typeFrom),typeTo);
-#else
 				return ChangeType(Convert.ChangeType(value, Enum.GetUnderlyingType(typeFrom)), Enum.GetUnderlyingType(typeFrom), typeTo);
-#endif
 			}
 
 			if (typeTo == typeof(Guid))
@@ -75,11 +70,7 @@ namespace EmitMapper.NetStandard.Conversion
 					return ChangeType(value, typeFrom, ut);
 				}
 			}
-#if SILVERLIGHT
-            return ConvertSL.ChangeType(value, typeTo);
-#else
 			return Convert.ChangeType(value, typeTo);
-#endif
 		}
 
 		public static string ObjectToString(object obj)
@@ -100,23 +91,14 @@ namespace EmitMapper.NetStandard.Conversion
 			return new Guid(str);
 		}
 
-		internal static TEnum ToEnum<TEnum, TUnder>(object obj)
+	    public static TEnum ToEnum<TEnum, TUnder>(object obj)
 		{
 			if (obj is string)
 			{
 				var str = obj.ToString();
-
-#if SILVERLIGHT
-				return (TEnum)EnumSL.Parse(typeof(TEnum), str);
-#else
 				return (TEnum)Enum.Parse(typeof(TEnum), str);
-#endif
 			}
-#if SILVERLIGHT
-			return (TEnum)ConvertSL.ChangeType(obj, typeof(TUnder));
-#else
 			return (TEnum)Convert.ChangeType(obj, typeof(TUnder));
-#endif
 		}
 
 		public static MethodInfo GetConversionMethod(Type from, Type to)
@@ -134,7 +116,7 @@ namespace EmitMapper.NetStandard.Conversion
 			if (to.IsEnum)
 			{
 				return typeof(EMConvert)
-					.GetMethod("ToEnum", BindingFlags.Static | BindingFlags.NonPublic)
+					.GetMethod("ToEnum", BindingFlags.Static | BindingFlags.Public)
 					.MakeGenericMethod(to, Enum.GetUnderlyingType(to));
 			}
 
@@ -173,18 +155,10 @@ namespace EmitMapper.NetStandard.Conversion
 			{
 				if (typeFrom == typeof(string))
 				{
-#if SILVERLIGHT
-                    return EnumSL.Parse(typeTo, value.ToString());
-#else
 					return Enum.Parse(typeTo, value.ToString());
-#endif
 				}
 			}
-#if SILVERLIGHT
-            return Enum.ToObject(typeTo, ConvertSL.ChangeType(value, Enum.GetUnderlyingType(typeTo)));
-#else
 			return Enum.ToObject(typeTo, Convert.ChangeType(value, Enum.GetUnderlyingType(typeTo)));
-#endif
 		}
 	}
 }
