@@ -76,8 +76,8 @@ namespace EmitMapper.NetStandard.EmitInvoker.Delegates
 
             new AstReturn
             {
-                returnType = typeof(object),
-                returnValue = CreateCallDelegate(del, par)
+                ReturnType = typeof(object),
+                ReturnValue = CreateCallDelegate(del, par)
             }.Compile(new CompilationContext(methodBuilder.GetILGenerator()));
 
             return tb.CreateTypeInfo().AsType();
@@ -119,7 +119,7 @@ namespace EmitMapper.NetStandard.EmitInvoker.Delegates
 
             new AstComplexNode
             {
-                nodes = new List<IAstNode>
+                Nodes = new List<IAstNode>
                 {
                     CreateCallDelegate(del, par),
                     new AstReturnVoid()
@@ -136,7 +136,7 @@ namespace EmitMapper.NetStandard.EmitInvoker.Delegates
                     del.GetType().GetMethod("Invoke"),
                     new AstCastclassRef(
                         AstBuildHelper.ReadFieldRV(
-                            new AstReadThis() { thisType = typeof(DelegateInvokerBase) },
+                            new AstReadThis() { ThisType = typeof(DelegateInvokerBase) },
                             typeof(DelegateInvokerBase).GetField("_del", BindingFlags.NonPublic | BindingFlags.Instance)
                         ),
                         del.GetType()

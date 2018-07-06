@@ -7,19 +7,19 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstReturn : IAstNode, IAstAddr
     {
-        public Type returnType;
-        public IAstRefOrValue returnValue;
+        public Type ReturnType;
+        public IAstRefOrValue ReturnValue;
 
         public void Compile(CompilationContext context)
         {
-            returnValue.Compile(context);
-            CompilationHelper.PrepareValueOnStack(context, returnType, returnValue.itemType);
+            ReturnValue.Compile(context);
+            CompilationHelper.PrepareValueOnStack(context, ReturnType, ReturnValue.ItemType);
             context.Emit(OpCodes.Ret);
         }
 
-        public Type itemType
+        public Type ItemType
         {
-            get { return returnType; }
+            get { return ReturnType; }
         }
     }
 }

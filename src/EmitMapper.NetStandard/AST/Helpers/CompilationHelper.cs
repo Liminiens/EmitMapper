@@ -32,7 +32,7 @@ namespace EmitMapper.NetStandard.AST.Helpers
             for (int i = 0; i < args.Length; ++i)
             {
                 arguments[i].Compile(context);
-                PrepareValueOnStack(context, args[i].ParameterType, arguments[i].itemType);
+                PrepareValueOnStack(context, args[i].ParameterType, arguments[i].ItemType);
             }
             if (methodInfo.IsVirtual)
             {

@@ -9,14 +9,14 @@ namespace EmitMapper.NetStandard.AST.Nodes
 	/// </summary>
 	class AstIfNull : IAstRefOrValue
 	{
-		IAstRef _value;
-		IAstRefOrValue _ifNullValue;
+	    readonly IAstRef _value;
+	    readonly IAstRefOrValue _ifNullValue;
 
-		public Type itemType
+		public Type ItemType
 		{
 			get 
 			{
-				return _value.itemType;
+				return _value.ItemType;
 			}
 		}
 
@@ -24,7 +24,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 		{
 			_value = value;
 			_ifNullValue = ifNullValue;
-			if (!_value.itemType.IsAssignableFrom(_ifNullValue.itemType))
+			if (!_value.ItemType.IsAssignableFrom(_ifNullValue.ItemType))
 			{
 				throw new EmitMapperException("Incorrect ifnull expression");
 			}
@@ -32,13 +32,13 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
 		public void Compile(CompilationContext context)
 		{
-			Label ifNotNullLabel = context.ilGenerator.DefineLabel();
+			Label ifNotNullLabel = context.ILGenerator.DefineLabel();
 			_value.Compile(context);
 			context.Emit(OpCodes.Dup);
 			context.Emit(OpCodes.Brtrue_S, ifNotNullLabel);
 			context.Emit(OpCodes.Pop);
 			_ifNullValue.Compile(context);
-			context.ilGenerator.MarkLabel(ifNotNullLabel);
+			context.ILGenerator.MarkLabel(ifNotNullLabel);
 		}
 	}
 }

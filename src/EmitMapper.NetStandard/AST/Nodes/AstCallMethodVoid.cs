@@ -7,25 +7,25 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstCallMethodVoid : IAstNode
     {
-        protected MethodInfo methodInfo;
-		protected IAstRefOrAddr invocationObject;
-        protected List<IAstStackItem> arguments;
+        protected MethodInfo MethodInfo;
+		protected IAstRefOrAddr InvocationObject;
+        protected List<IAstStackItem> Arguments;
 
 		public AstCallMethodVoid(
 			MethodInfo methodInfo,
 			IAstRefOrAddr invocationObject,
             List<IAstStackItem> arguments)
 		{
-			this.methodInfo = methodInfo;
-			this.invocationObject = invocationObject;
-			this.arguments = arguments;
+			this.MethodInfo = methodInfo;
+			this.InvocationObject = invocationObject;
+			this.Arguments = arguments;
 		}
 
         public void Compile(CompilationContext context)
         {
-			new AstCallMethod(methodInfo, invocationObject, arguments).Compile(context);
+			new AstCallMethod(MethodInfo, InvocationObject, Arguments).Compile(context);
 
-            if (methodInfo.ReturnType != typeof(void))
+            if (MethodInfo.ReturnType != typeof(void))
             {
                 context.Emit(OpCodes.Pop);
             }

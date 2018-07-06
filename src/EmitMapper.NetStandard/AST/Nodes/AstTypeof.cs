@@ -6,11 +6,11 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
 	class AstTypeof: IAstRef
 	{
-		public Type type;
+		public Type Type;
 
 		#region IAstStackItem Members
 
-		public Type itemType
+		public Type ItemType
 		{
 			get 
 			{
@@ -24,7 +24,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
 		public void Compile(CompilationContext context)
 		{
-			context.Emit(OpCodes.Ldtoken, type);
+			context.Emit(OpCodes.Ldtoken, Type);
 			context.EmitCall(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle"));
 		}
 

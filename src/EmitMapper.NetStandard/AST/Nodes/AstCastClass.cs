@@ -7,20 +7,20 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
 	class AstCastclass : IAstRefOrValue
 	{
-        protected IAstRefOrValue _value;
-        protected Type _targetType;
+        protected IAstRefOrValue Value;
+        protected Type TargetType;
 
         public AstCastclass(IAstRefOrValue value, Type targetType)
 		{
-			_value = value;
-			_targetType = targetType;
+			Value = value;
+			TargetType = targetType;
 		}
 
 		#region IAstStackItem Members
 
-		public Type itemType
+		public Type ItemType
 		{
-			get { return _targetType; }
+			get { return TargetType; }
 		}
 
 		#endregion
@@ -30,17 +30,17 @@ namespace EmitMapper.NetStandard.AST.Nodes
 		public virtual void Compile(CompilationContext context)
 		{
 
-            if (_value.itemType != _targetType)
+            if (Value.ItemType != TargetType)
             {
-                if (!_value.itemType.IsValueType && !_targetType.IsValueType)
+                if (!Value.ItemType.IsValueType && !TargetType.IsValueType)
                 {
-                    _value.Compile(context);
-                    context.Emit(OpCodes.Castclass, _targetType);
+                    Value.Compile(context);
+                    context.Emit(OpCodes.Castclass, TargetType);
                     return;
                 }
-                else if (_targetType.IsValueType && !_value.itemType.IsValueType)
+                else if (TargetType.IsValueType && !Value.ItemType.IsValueType)
                 {
-                    new AstUnbox() { refObj = (IAstRef)_value, unboxedType = _targetType }.Compile(context);
+                    new AstUnbox() { RefObj = (IAstRef)Value, UnboxedType = TargetType }.Compile(context);
                     return;
                 }
 
@@ -48,7 +48,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
             }
             else
             {
-                _value.Compile(context);
+                Value.Compile(context);
             }
 		}
 
@@ -63,7 +63,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -76,7 +76,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }

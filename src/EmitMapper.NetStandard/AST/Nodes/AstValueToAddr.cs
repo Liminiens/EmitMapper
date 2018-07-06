@@ -6,29 +6,29 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstValueToAddr: IAstAddr
     {
-        public IAstValue value;
-        public Type itemType
+        public IAstValue Value;
+        public Type ItemType
         {
             get 
             {
-                return value.itemType; 
+                return Value.ItemType; 
             }
         }
 
         public AstValueToAddr(IAstValue value)
         {
-            this.value = value;
+            this.Value = value;
         }
 
         public void Compile(CompilationContext context)
         {
-            LocalBuilder loc = context.ilGenerator.DeclareLocal(itemType);
+            LocalBuilder loc = context.ILGenerator.DeclareLocal(ItemType);
             new AstInitializeLocalVariable(loc).Compile(context);
             new AstWriteLocal()
                 {
-                    localIndex = loc.LocalIndex,
-                    localType = loc.LocalType,
-                    value = value
+                    LocalIndex = loc.LocalIndex,
+                    LocalType = loc.LocalType,
+                    Value = Value
                 }.Compile(context);
             new AstReadLocalAddr(loc).Compile(context);
         }

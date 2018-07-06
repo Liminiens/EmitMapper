@@ -86,7 +86,7 @@ namespace EmitMapper.NetStandard.Conversion
 			IAstRefOrValue sourceValue
 			)
 		{
-			if (destinationType == sourceValue.itemType)
+			if (destinationType == sourceValue.ItemType)
 			{
 				return sourceValue;
 			}
@@ -137,8 +137,8 @@ namespace EmitMapper.NetStandard.Conversion
 				null,
 				new List<IAstStackItem>{
 					sourceValue,
-					new AstTypeof(){type = sourceType},
-					new AstTypeof(){type = destinationType}
+					new AstTypeof(){Type = sourceType},
+					new AstTypeof(){Type = destinationType}
 				}
 			);
 		}

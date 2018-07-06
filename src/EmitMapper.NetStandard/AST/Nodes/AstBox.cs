@@ -6,15 +6,15 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstBox : IAstRef
     {
-        public IAstRefOrValue value;
+        public IAstRefOrValue Value;
 
         #region IAstReturnValueNode Members
 
-        public Type itemType
+        public Type ItemType
         {
             get 
             {
-                return value.itemType;  
+                return Value.ItemType;  
             }
         }
 
@@ -24,11 +24,11 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         public void Compile(CompilationContext context)
         {
-            value.Compile(context);
+            Value.Compile(context);
 
-            if (value.itemType.IsValueType)
+            if (Value.ItemType.IsValueType)
             {
-                context.Emit(OpCodes.Box, itemType);
+                context.Emit(OpCodes.Box, ItemType);
             }
         }
 

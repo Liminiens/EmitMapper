@@ -6,13 +6,13 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstReadThis : IAstRefOrAddr
     {
-        public Type thisType;
+        public Type ThisType;
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return thisType;
+                return ThisType;
             }
         }
 
@@ -23,10 +23,10 @@ namespace EmitMapper.NetStandard.AST.Nodes
         public virtual void Compile(CompilationContext context)
         {
             AstReadArgument arg = new AstReadArgument()
-                                      {
-                                          argumentIndex = 0,
-                                          argumentType = thisType
-                                      };
+            {
+                ArgumentIndex = 0,
+                ArgumentType = ThisType
+            };
             arg.Compile(context);
         }
     }
@@ -35,7 +35,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -44,7 +44,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }

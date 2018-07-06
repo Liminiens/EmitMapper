@@ -7,9 +7,9 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstWriteLocal : IAstNode
     {
-        public int localIndex;
-        public Type localType;
-        public IAstRefOrValue value;
+        public int LocalIndex;
+        public Type LocalType;
+        public IAstRefOrValue Value;
 
         public AstWriteLocal()
         {
@@ -17,17 +17,17 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         public AstWriteLocal(LocalBuilder loc, IAstRefOrValue value)
         {
-            localIndex = loc.LocalIndex;
-            localType = loc.LocalType;
-            this.value = value;
+            LocalIndex = loc.LocalIndex;
+            LocalType = loc.LocalType;
+            this.Value = value;
         }
 
 
         public void Compile(CompilationContext context)
         {
-            value.Compile(context);
-            CompilationHelper.PrepareValueOnStack(context, localType, value.itemType);
-            context.Emit(OpCodes.Stloc, localIndex);
+            Value.Compile(context);
+            CompilationHelper.PrepareValueOnStack(context, LocalType, Value.ItemType);
+            context.Emit(OpCodes.Stloc, LocalIndex);
         }
     }
 }

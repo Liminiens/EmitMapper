@@ -6,18 +6,18 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstUnbox : IAstValue
     {
-        public Type unboxedType;
-        public IAstRef refObj;
+        public Type UnboxedType;
+        public IAstRef RefObj;
 
-        public Type itemType
+        public Type ItemType
         {
-            get { return unboxedType; }
+            get { return UnboxedType; }
         }
 
         public void Compile(CompilationContext context)
         {
-            refObj.Compile(context);
-            context.Emit(OpCodes.Unbox_Any, unboxedType);
+            RefObj.Compile(context);
+            context.Emit(OpCodes.Unbox_Any, UnboxedType);
         }
     }
 }

@@ -8,10 +8,10 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstWriteProperty : IAstNode
     {
-		private IAstRefOrAddr _targetObject;
-		private IAstRefOrValue _value;
+		private readonly IAstRefOrAddr _targetObject;
+		private readonly IAstRefOrValue _value;
 		private PropertyInfo _propertyInfo;
-		private MethodInfo _setMethod;
+		private readonly MethodInfo _setMethod;
 
 		public AstWriteProperty(IAstRefOrAddr targetObject, IAstRefOrValue value, PropertyInfo propertyInfo)
 		{

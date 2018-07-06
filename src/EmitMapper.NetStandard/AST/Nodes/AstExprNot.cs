@@ -6,9 +6,9 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
 	class AstExprNot : IAstValue
 	{
-		IAstRefOrValue _value;
+	    readonly IAstRefOrValue _value;
 
-		public Type itemType
+		public Type ItemType
 		{
 			get { return typeof(Int32); }
 		}

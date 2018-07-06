@@ -6,7 +6,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 	class AstNewNullable: IAstValue
 	{
 		private Type _nullableType;
-		public Type itemType
+		public Type ItemType
 		{
 			get 
 			{

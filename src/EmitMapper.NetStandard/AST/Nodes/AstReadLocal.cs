@@ -7,14 +7,14 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstReadLocal : IAstStackItem
     {
-        public int localIndex;
-        public Type localType;
+        public int LocalIndex;
+        public Type LocalType;
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return localType;
+                return LocalType;
             }
         }
 
@@ -24,13 +24,13 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         public AstReadLocal(LocalBuilder loc)
         {
-            localIndex = loc.LocalIndex;
-            localType = loc.LocalType;
+            LocalIndex = loc.LocalIndex;
+            LocalType = loc.LocalType;
         }
 
         public virtual void Compile(CompilationContext context)
         {
-            context.Emit(OpCodes.Ldloc, localIndex);
+            context.Emit(OpCodes.Ldloc, LocalIndex);
         }
     }
 
@@ -38,7 +38,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -47,7 +47,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }
@@ -56,14 +56,14 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         public AstReadLocalAddr(LocalBuilder loc)
         {
-            localIndex = loc.LocalIndex;
-            localType = loc.LocalType.MakeByRefType();
+            LocalIndex = loc.LocalIndex;
+            LocalType = loc.LocalType.MakeByRefType();
         }
 
         override public void Compile(CompilationContext context)
         {
             //CompilationHelper.CheckIsValue(itemType);
-            context.Emit(OpCodes.Ldloca, localIndex);
+            context.Emit(OpCodes.Ldloca, LocalIndex);
         }
     }
 }

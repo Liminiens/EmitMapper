@@ -8,9 +8,9 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstCallMethod: IAstRefOrValue
     {
-        public MethodInfo methodInfo;
-        public IAstRefOrAddr invocationObject;
-        public List<IAstStackItem> arguments;
+        public MethodInfo MethodInfo;
+        public IAstRefOrAddr InvocationObject;
+        public List<IAstStackItem> Arguments;
 
 		public AstCallMethod(
 			MethodInfo methodInfo,
@@ -21,22 +21,22 @@ namespace EmitMapper.NetStandard.AST.Nodes
 			{
 				throw new InvalidOperationException("methodInfo is null");
 			}
-			this.methodInfo = methodInfo;
-			this.invocationObject = invocationObject;
-			this.arguments = arguments;
+			this.MethodInfo = methodInfo;
+			this.InvocationObject = invocationObject;
+			this.Arguments = arguments;
 		}
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return methodInfo.ReturnType;
+                return MethodInfo.ReturnType;
             }
         }
 
         public virtual void Compile(CompilationContext context)
         {
-            CompilationHelper.EmitCall(context, invocationObject, methodInfo, arguments);
+            CompilationHelper.EmitCall(context, InvocationObject, MethodInfo, Arguments);
         }
     }
 
@@ -49,7 +49,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -62,7 +62,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 		}
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }

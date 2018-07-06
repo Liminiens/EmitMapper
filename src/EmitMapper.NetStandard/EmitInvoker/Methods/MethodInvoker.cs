@@ -76,8 +76,8 @@ namespace EmitMapper.NetStandard.EmitInvoker.Methods
 
             new AstReturn
             {
-                returnType = typeof(object),
-                returnValue = CreateCallMethod(mi, par)
+                ReturnType = typeof(object),
+                ReturnValue = CreateCallMethod(mi, par)
             }.Compile(new CompilationContext(methodBuilder.GetILGenerator()));
 
             return tb.CreateTypeInfo().AsType();
@@ -119,7 +119,7 @@ namespace EmitMapper.NetStandard.EmitInvoker.Methods
 
             new AstComplexNode
             {
-                nodes = new List<IAstNode>
+                Nodes = new List<IAstNode>
                 {
                     CreateCallMethod(mi, par),
                     new AstReturnVoid()
@@ -137,7 +137,7 @@ namespace EmitMapper.NetStandard.EmitInvoker.Methods
                     mi.IsStatic ? null : 
                         new AstCastclassRef(
                             AstBuildHelper.ReadFieldRV(
-                                new AstReadThis() { thisType = typeof(MethodInvokerBase) },
+                                new AstReadThis() { ThisType = typeof(MethodInvokerBase) },
                                 typeof(MethodInvokerBase).GetField("targetObject", BindingFlags.NonPublic | BindingFlags.Instance)
                             ),
                             mi.DeclaringType

@@ -4,6 +4,6 @@ namespace EmitMapper.NetStandard.AST.Interfaces
 {
     interface IAstStackItem: IAstNode
     {
-        Type itemType { get; }
+        Type ItemType { get; }
     }
 }

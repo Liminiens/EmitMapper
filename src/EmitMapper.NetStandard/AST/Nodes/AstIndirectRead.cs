@@ -7,13 +7,13 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     abstract class AstIndirectRead : IAstStackItem
     {
-        public Type argumentType;
+        public Type ArgumentType;
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return argumentType;
+                return ArgumentType;
             }
         }
 
@@ -24,8 +24,8 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
-            context.Emit(OpCodes.Ldind_Ref, itemType);
+            CompilationHelper.CheckIsRef(ItemType);
+            context.Emit(OpCodes.Ldind_Ref, ItemType);
         }
     }
 
@@ -33,8 +33,8 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
-            if (itemType == typeof(Int32))
+            CompilationHelper.CheckIsValue(ItemType);
+            if (ItemType == typeof(Int32))
             {
                 context.Emit(OpCodes.Ldind_I4);
             }
@@ -49,7 +49,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
         }
     }
 }

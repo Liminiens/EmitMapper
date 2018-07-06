@@ -6,18 +6,18 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstExprEquals : IAstValue
     {
-        IAstValue leftValue;
-        IAstValue rightValue;
+        readonly IAstValue _leftValue;
+        readonly IAstValue _rightValue;
 
         public AstExprEquals(IAstValue leftValue, IAstValue rightValue)
         {
-            this.leftValue = leftValue;
-            this.rightValue = rightValue;
+            this._leftValue = leftValue;
+            this._rightValue = rightValue;
         }
 
         #region IAstReturnValueNode Members
 
-        public Type itemType
+        public Type ItemType
         {
             get { return typeof(Int32); }
         }
@@ -28,8 +28,8 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         public void Compile(CompilationContext context)
         {
-            leftValue.Compile(context);
-            rightValue.Compile(context);
+            _leftValue.Compile(context);
+            _rightValue.Compile(context);
             context.Emit(OpCodes.Ceq);
         }
 

@@ -30,16 +30,16 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadArgumentValue()
                            {
-                               argumentIndex = argumentIndex,
-                               argumentType = argumentType
+                               ArgumentIndex = argumentIndex,
+                               ArgumentType = argumentType
                            };
             }
             else
             {
                 return new AstReadArgumentRef()
                            {
-                               argumentIndex = argumentIndex,
-                               argumentType = argumentType
+                               ArgumentIndex = argumentIndex,
+                               ArgumentType = argumentType
                            };
             }
         }
@@ -50,55 +50,55 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadArgumentAddr()
                            {
-                               argumentIndex = argumentIndex,
-                               argumentType = argumentType
+                               ArgumentIndex = argumentIndex,
+                               ArgumentType = argumentType
                            };
             }
             else
             {
                 return new AstReadArgumentRef()
                            {
-                               argumentIndex = argumentIndex,
-                               argumentType = argumentType
+                               ArgumentIndex = argumentIndex,
+                               ArgumentType = argumentType
                            };
             }
         }
         public static IAstRefOrValue ReadArrayItemRV(IAstRef array, int index)	
         {
-            if (array.itemType.IsValueType)
+            if (array.ItemType.IsValueType)
             {
                 return new AstReadArrayItemValue()
                            {
-                               array = array,
-                               index = index
+                               Array = array,
+                               Index = index
                            };
             }
             else
             {
                 return new AstReadArrayItemRef()
                            {
-                               array = array,
-                               index = index
+                               Array = array,
+                               Index = index
                            };
             }
         }
 
         public static IAstRefOrAddr ReadArrayItemRA(IAstRef array, int index)
         {
-            if (array.itemType.IsValueType)
+            if (array.ItemType.IsValueType)
             {
                 return new AstReadArrayItemAddr()
                            {
-                               array = array,
-                               index = index
+                               Array = array,
+                               Index = index
                            };
             }
             else
             {
                 return new AstReadArrayItemRef()
                            {
-                               array = array,
-                               index = index
+                               Array = array,
+                               Index = index
                            };
             }
         }
@@ -109,16 +109,16 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadFieldValue()
                            {
-                               fieldInfo = fieldInfo,
-                               sourceObject = sourceObject
+                               FieldInfo = fieldInfo,
+                               SourceObject = sourceObject
                            };
             }
             else
             {
                 return new AstReadFieldRef()
                            {
-                               fieldInfo = fieldInfo,
-                               sourceObject = sourceObject
+                               FieldInfo = fieldInfo,
+                               SourceObject = sourceObject
                            };
             }
         }
@@ -141,16 +141,16 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadFieldAddr()
                            {
-                               fieldInfo = fieldInfo,
-                               sourceObject = sourceObject
+                               FieldInfo = fieldInfo,
+                               SourceObject = sourceObject
                            };
             }
             else
             {
                 return new AstReadFieldRef()
                            {
-                               fieldInfo = fieldInfo,
-                               sourceObject = sourceObject
+                               FieldInfo = fieldInfo,
+                               SourceObject = sourceObject
                            };
             }
         }
@@ -161,16 +161,16 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadLocalValue()
                            {
-                               localType = loc.LocalType,
-                               localIndex = loc.LocalIndex
+                               LocalType = loc.LocalType,
+                               LocalIndex = loc.LocalIndex
                            };
             }
             else
             {
                 return new AstReadLocalRef()
                            {
-                               localType = loc.LocalType,
-                               localIndex = loc.LocalIndex
+                               LocalType = loc.LocalType,
+                               LocalIndex = loc.LocalIndex
                            };
             }
         }
@@ -185,8 +185,8 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadLocalRef()
                            {
-                               localType = loc.LocalType,
-                               localIndex = loc.LocalIndex
+                               LocalType = loc.LocalType,
+                               LocalIndex = loc.LocalIndex
                            };
             }
         }
@@ -199,8 +199,8 @@ namespace EmitMapper.NetStandard.AST.Helpers
                     AstValueToAddr(
                         new AstReadPropertyValue()
                         {
-                            sourceObject = sourceObject,
-                            propertyInfo = propertyInfo
+                            SourceObject = sourceObject,
+                            PropertyInfo = propertyInfo
                         }
                     );
             }
@@ -208,8 +208,8 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadPropertyRef()
                 {
-                    sourceObject = sourceObject,
-                    propertyInfo = propertyInfo
+                    SourceObject = sourceObject,
+                    PropertyInfo = propertyInfo
                 };
             }
         }
@@ -220,16 +220,16 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadPropertyValue()
                            {
-                               sourceObject = sourceObject,
-                               propertyInfo = propertyInfo
+                               SourceObject = sourceObject,
+                               PropertyInfo = propertyInfo
                            };
             }
             else
             {
                 return new AstReadPropertyRef()
                            {
-                               sourceObject = sourceObject,
-                               propertyInfo = propertyInfo
+                               SourceObject = sourceObject,
+                               PropertyInfo = propertyInfo
                            };
             }
         }
@@ -240,14 +240,14 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstReadThisAddr()
                            {
-                               thisType = thisType
+                               ThisType = thisType
                            };
             }
             else
             {
                 return new AstReadThisRef()
                            {
-                               thisType = thisType
+                               ThisType = thisType
                            };
 
             }
@@ -373,9 +373,9 @@ namespace EmitMapper.NetStandard.AST.Helpers
             {
                 return new AstWriteField()
                            {
-                               fieldInfo = (FieldInfo)memberInfo,
-                               targetObject = targetObject,
-                               value = value
+                               FieldInfo = (FieldInfo)memberInfo,
+                               TargetObject = targetObject,
+                               Value = value
                            };
             }
             else

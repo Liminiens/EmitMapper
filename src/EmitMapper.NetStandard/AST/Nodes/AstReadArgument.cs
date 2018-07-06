@@ -7,20 +7,20 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstReadArgument : IAstStackItem
     {
-        public int argumentIndex;
-        public Type argumentType;
+        public int ArgumentIndex;
+        public Type ArgumentType;
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return argumentType;
+                return ArgumentType;
             }
         }
 
         public virtual void Compile(CompilationContext context)
         {
-            switch (argumentIndex)
+            switch (ArgumentIndex)
             {
                 case 0:
                     context.Emit(OpCodes.Ldarg_0);
@@ -35,7 +35,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
                     context.Emit(OpCodes.Ldarg_3);
                     break;
                 default:
-                    context.Emit(OpCodes.Ldarg, argumentIndex);
+                    context.Emit(OpCodes.Ldarg, ArgumentIndex);
                     break;
             }
         }
@@ -45,7 +45,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -54,7 +54,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }
@@ -63,8 +63,8 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
-            context.Emit(OpCodes.Ldarga, argumentIndex);
+            CompilationHelper.CheckIsValue(ItemType);
+            context.Emit(OpCodes.Ldarga, ArgumentIndex);
         }
     }
 }

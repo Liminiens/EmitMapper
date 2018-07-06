@@ -8,16 +8,16 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstExprIsNull : IAstValue
     {
-        IAstRefOrValue value;
+        readonly IAstRefOrValue _value;
 
 		public AstExprIsNull(IAstRefOrValue value)
         {
-            this.value = value;
+            this._value = value;
         }
 
         #region IAstReturnValueNode Members
 
-        public Type itemType
+        public Type ItemType
         {
             get { return typeof(Int32); }
         }
@@ -28,22 +28,22 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         public void Compile(CompilationContext context)
         {
-            if (!(value is IAstRef) && !ReflectionUtils.IsNullable(value.itemType))
+            if (!(_value is IAstRef) && !ReflectionUtils.IsNullable(_value.ItemType))
             {
                 context.Emit(OpCodes.Ldc_I4_1);
             }
-			else if (ReflectionUtils.IsNullable(value.itemType))
+			else if (ReflectionUtils.IsNullable(_value.ItemType))
 			{
 				AstBuildHelper.ReadPropertyRV(
-					new AstValueToAddr((IAstValue)value),
-					value.itemType.GetProperty("HasValue")
+					new AstValueToAddr((IAstValue)_value),
+					_value.ItemType.GetProperty("HasValue")
 				).Compile(context);
 				context.Emit(OpCodes.Ldc_I4_0);
 				context.Emit(OpCodes.Ceq);
 			}
 			else
 			{
-				value.Compile(context);
+				_value.Compile(context);
 				new AstConstantNull().Compile(context);
 				context.Emit(OpCodes.Ceq);
 			}

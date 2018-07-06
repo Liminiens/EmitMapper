@@ -191,13 +191,13 @@ namespace EmitMapper.NetStandard.Mappers
 
             return new AstReturn()
                        {
-                           returnType = typeof(object),
-                           returnValue = AstBuildHelper.CallMethod(
+                           ReturnType = typeof(object),
+                           ReturnValue = AstBuildHelper.CallMethod(
                                mi,
                                AstBuildHelper.ReadThis(typeof(MapperForCollectionImpl)),
                                new List<IAstStackItem>
                                    {
-                                       new AstReadArgumentRef(){argumentIndex = 1, argumentType = typeof(object)}
+                                       new AstReadArgumentRef(){ArgumentIndex = 1, ArgumentType = typeof(object)}
                                    }
                                )
                        };

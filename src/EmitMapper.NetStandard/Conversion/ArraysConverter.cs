@@ -54,11 +54,7 @@ namespace EmitMapper.NetStandard.Conversion
 	{
 		public T[] Convert(ICollection<T> from, object state)
 		{
-			if (from == null)
-			{
-				return null;
-			}
-			return from.ToArray();
+		    return @from?.ToArray();
 		}
 	}
 

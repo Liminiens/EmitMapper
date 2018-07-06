@@ -8,7 +8,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         #region IAstReturnValueNode Members
 
-        public Type itemType
+        public Type ItemType
         {
             get { return typeof(object); }
         }

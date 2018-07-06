@@ -7,22 +7,22 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstReadArrayItem : IAstStackItem
     {
-        public IAstRef array;
-        public int index;
+        public IAstRef Array;
+        public int Index;
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return array.itemType.GetElementType();
+                return Array.ItemType.GetElementType();
             }
         }
 
         public virtual void Compile(CompilationContext context)
         {
-            array.Compile(context);
-            context.Emit(OpCodes.Ldc_I4, index);
-            context.Emit(OpCodes.Ldelem, itemType);
+            Array.Compile(context);
+            context.Emit(OpCodes.Ldc_I4, Index);
+            context.Emit(OpCodes.Ldelem, ItemType);
         }
     }
 
@@ -30,7 +30,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -39,7 +39,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }
@@ -48,10 +48,10 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
-            array.Compile(context);
-            context.Emit(OpCodes.Ldc_I4, index);
-            context.Emit(OpCodes.Ldelema, itemType);
+            CompilationHelper.CheckIsValue(ItemType);
+            Array.Compile(context);
+            context.Emit(OpCodes.Ldc_I4, Index);
+            context.Emit(OpCodes.Ldelema, ItemType);
         }
     }
 }

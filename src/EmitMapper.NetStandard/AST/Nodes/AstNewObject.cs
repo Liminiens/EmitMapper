@@ -10,27 +10,27 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstNewObject: IAstRef
     {
-        public Type objectType;
+        public Type ObjectType;
         public IAstStackItem[] ConstructorParams;
 
         public AstNewObject()
         { 
         }
 
-        public AstNewObject(Type objectType, IAstStackItem[] ConstructorParams)
+        public AstNewObject(Type objectType, IAstStackItem[] constructorParams)
         {
-            this.objectType = objectType;
-            this.ConstructorParams = ConstructorParams;
+            this.ObjectType = objectType;
+            this.ConstructorParams = constructorParams;
         }
 
 		
         #region IAstStackItem Members
 
-        public Type itemType
+        public Type ItemType
         {
             get 
             {
-                return objectType; 
+                return ObjectType; 
             }
         }
 
@@ -40,13 +40,13 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         public void Compile(CompilationContext context)
         {
-			if (ReflectionUtils.IsNullable(objectType))
+			if (ReflectionUtils.IsNullable(ObjectType))
 			{
 				IAstRefOrValue underlyingValue;
-				var underlyingType = Nullable.GetUnderlyingType(objectType);
+				var underlyingType = Nullable.GetUnderlyingType(ObjectType);
                 if (ConstructorParams == null || ConstructorParams.Length == 0)
 				{
-					LocalBuilder temp = context.ilGenerator.DeclareLocal(underlyingType);
+					LocalBuilder temp = context.ILGenerator.DeclareLocal(underlyingType);
 					new AstInitializeLocalVariable(temp).Compile(context);
 					underlyingValue = AstBuildHelper.ReadLocalRV(temp);
 				}
@@ -55,7 +55,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 					underlyingValue = (IAstValue)ConstructorParams[0];
 				}
 
-				ConstructorInfo constructor = objectType.GetConstructor(
+				ConstructorInfo constructor = ObjectType.GetConstructor(
 					BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance, 
 					null, 
 					new[] { underlyingType }, 
@@ -73,28 +73,28 @@ namespace EmitMapper.NetStandard.AST.Nodes
 				}
 				else
 				{
-					types = ConstructorParams.Select(c => c.itemType).ToArray();
+					types = ConstructorParams.Select(c => c.ItemType).ToArray();
 					foreach (var p in ConstructorParams)
 					{
 						p.Compile(context);
 					}
 				}
 
-				ConstructorInfo ci = objectType.GetConstructor(types);
+				ConstructorInfo ci = ObjectType.GetConstructor(types);
 				if (ci != null)
 				{
 					context.EmitNewObject(ci);
 				}
-                else if (objectType.IsValueType)
+                else if (ObjectType.IsValueType)
                 {
-                    LocalBuilder temp = context.ilGenerator.DeclareLocal(objectType);
+                    LocalBuilder temp = context.ILGenerator.DeclareLocal(ObjectType);
                     new AstInitializeLocalVariable(temp).Compile(context);
                     AstBuildHelper.ReadLocalRV(temp).Compile(context);
                 }
                 else
                 {
                     throw new Exception(
-                        String.Format("Constructor for types [{0}] not found in {1}", types.ToCSV(","), objectType.FullName)
+                        String.Format("Constructor for types [{0}] not found in {1}", types.ToCSV(","), ObjectType.FullName)
                     );
                 }
 			}

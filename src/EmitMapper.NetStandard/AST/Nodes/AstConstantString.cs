@@ -6,11 +6,11 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstConstantString: IAstRef
     {
-        public string str;
+        public string Str;
 
         #region IAstStackItem Members
 
-        public Type itemType
+        public Type ItemType
         {
             get 
             {
@@ -24,7 +24,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
 
         public void Compile(CompilationContext context)
         {
-            context.Emit(OpCodes.Ldstr, str);
+            context.Emit(OpCodes.Ldstr, Str);
         }
 
         #endregion

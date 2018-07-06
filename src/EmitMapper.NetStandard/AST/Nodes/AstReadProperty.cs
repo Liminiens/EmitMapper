@@ -7,27 +7,27 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstReadProperty : IAstRefOrValue
     {
-        public IAstRefOrAddr sourceObject;
-        public PropertyInfo propertyInfo;
+        public IAstRefOrAddr SourceObject;
+        public PropertyInfo PropertyInfo;
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return propertyInfo.PropertyType;
+                return PropertyInfo.PropertyType;
             }
         }
 
         public virtual void Compile(CompilationContext context)
         {
-            MethodInfo mi = propertyInfo.GetGetMethod();
+            MethodInfo mi = PropertyInfo.GetGetMethod();
 
             if (mi == null)
             {
-                throw new Exception("Property " + propertyInfo.Name + " doesn't have get accessor");
+                throw new Exception("Property " + PropertyInfo.Name + " doesn't have get accessor");
             }
 
-            AstBuildHelper.CallMethod(mi, sourceObject, null).Compile(context);
+            AstBuildHelper.CallMethod(mi, SourceObject, null).Compile(context);
         }
     }
 
@@ -35,7 +35,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -44,7 +44,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }

@@ -8,21 +8,21 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstReadField: IAstStackItem
     {
-        public IAstRefOrAddr sourceObject;
-        public FieldInfo fieldInfo;
+        public IAstRefOrAddr SourceObject;
+        public FieldInfo FieldInfo;
 
-        public Type itemType
+        public Type ItemType
         {
             get
             {
-                return fieldInfo.FieldType;
+                return FieldInfo.FieldType;
             }
         }
 
         public virtual void Compile(CompilationContext context)
         {
-            sourceObject.Compile(context);
-            context.Emit(OpCodes.Ldfld, fieldInfo);
+            SourceObject.Compile(context);
+            context.Emit(OpCodes.Ldfld, FieldInfo);
         }
     }
 
@@ -30,7 +30,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsRef(itemType);
+            CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
@@ -39,7 +39,7 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
+            CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }
@@ -48,9 +48,9 @@ namespace EmitMapper.NetStandard.AST.Nodes
     {
         override public void Compile(CompilationContext context)
         {
-            CompilationHelper.CheckIsValue(itemType);
-            sourceObject.Compile(context);
-            context.Emit(OpCodes.Ldflda, fieldInfo);
+            CompilationHelper.CheckIsValue(ItemType);
+            SourceObject.Compile(context);
+            context.Emit(OpCodes.Ldflda, FieldInfo);
         }
     }
 }

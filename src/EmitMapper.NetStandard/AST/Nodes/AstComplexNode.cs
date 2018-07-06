@@ -5,11 +5,11 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstComplexNode: IAstNode
     {
-        public List<IAstNode> nodes = new List<IAstNode>();
+        public List<IAstNode> Nodes = new List<IAstNode>();
 
         public void Compile(CompilationContext context)
         {
-            foreach (IAstNode node in nodes)
+            foreach (IAstNode node in Nodes)
             {
                 if (node != null)
                 {

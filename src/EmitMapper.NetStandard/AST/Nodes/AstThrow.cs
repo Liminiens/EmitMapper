@@ -5,11 +5,11 @@ namespace EmitMapper.NetStandard.AST.Nodes
 {
     class AstThrow: IAstNode
     {
-        public IAstRef exception;
+        public IAstRef Exception;
 
         public void Compile(CompilationContext context)
         {
-            exception.Compile(context);
+            Exception.Compile(context);
             context.Emit(OpCodes.Throw);
         }
     }
