@@ -1,24 +1,21 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace EmitMapper.NetStandard.Utils
 {
     class ThreadSaveCache
     {
-        Dictionary<string, object> _cache = new Dictionary<string,object>();
+        private readonly ConcurrentDictionary<string, object> _cache = new ConcurrentDictionary<string, object>();
 
         public T Get<T>(string key, Func<object> getter)
         {
-            lock(_cache)
+            if (!_cache.TryGetValue(key, out var value))
             {
-                object value;
-                if(!_cache.TryGetValue(key, out value))
-                {
-                    value = getter();
-                    _cache[key] = value;
-                }
-                return (T)value;
+                value = getter();
+                _cache.TryAdd(key, value);
             }
+            return (T)value;
         }
     }
 }
