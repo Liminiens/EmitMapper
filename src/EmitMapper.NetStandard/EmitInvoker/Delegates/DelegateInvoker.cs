@@ -137,7 +137,7 @@ namespace EmitMapper.NetStandard.EmitInvoker.Delegates
                     new AstCastclassRef(
                         AstBuildHelper.ReadFieldRV(
                             new AstReadThis() { ThisType = typeof(DelegateInvokerBase) },
-                            typeof(DelegateInvokerBase).GetField("_del", BindingFlags.NonPublic | BindingFlags.Instance)
+                            typeof(DelegateInvokerBase).GetField("_del", BindingFlags.Public | BindingFlags.Instance)
                         ),
                         del.GetType()
                     ),

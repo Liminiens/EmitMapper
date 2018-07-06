@@ -134,11 +134,11 @@ namespace EmitMapper.NetStandard.EmitInvoker.Methods
             return
                 AstBuildHelper.CallMethod(
                     mi,
-                    mi.IsStatic ? null : 
+                    mi.IsStatic ? null :
                         new AstCastclassRef(
                             AstBuildHelper.ReadFieldRV(
                                 new AstReadThis() { ThisType = typeof(MethodInvokerBase) },
-                                typeof(MethodInvokerBase).GetField("targetObject", BindingFlags.NonPublic | BindingFlags.Instance)
+                                typeof(MethodInvokerBase).GetField("targetObject", BindingFlags.Public | BindingFlags.Instance)
                             ),
                             mi.DeclaringType
                         ),

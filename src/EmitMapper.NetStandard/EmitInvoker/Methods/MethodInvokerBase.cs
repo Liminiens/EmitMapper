@@ -2,6 +2,6 @@
 {
     public class MethodInvokerBase
     {
-        internal object targetObject;
+        public object targetObject;
     }
 }
