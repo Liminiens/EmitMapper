@@ -1,6 +1,4 @@
-﻿using EmitMapper.NetStandard;
-
-namespace EmitMapper.Tests
+﻿namespace EmitMapper.Tests
 {
     class Context
     {

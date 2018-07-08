@@ -1,6 +1,5 @@
 ﻿using System;
-using EmitMapper.NetStandard;
-using EmitMapper.NetStandard.MappingConfiguration;
+using EmitMapper.MappingConfiguration;
 using Xunit;
 
 namespace EmitMapper.Tests

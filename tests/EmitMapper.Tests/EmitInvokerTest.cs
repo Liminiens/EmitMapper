@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using EmitMapper.NetStandard.EmitInvoker.Delegates;
-using EmitMapper.NetStandard.EmitInvoker.Methods;
+using EmitMapper.EmitInvoker.Delegates;
+using EmitMapper.EmitInvoker.Methods;
 using Xunit;
 
 namespace EmitMapper.Tests

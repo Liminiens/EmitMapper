@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\EmitMapper.NetStandard\EmitMapper.NetStandard.csproj" />
+    <ProjectReference Include="..\..\src\EmitMapper\EmitMapper.csproj" />
   </ItemGroup>
 
 </Project>

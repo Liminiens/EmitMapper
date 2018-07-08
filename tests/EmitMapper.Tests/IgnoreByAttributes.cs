@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmitMapper.NetStandard;
-using EmitMapper.NetStandard.MappingConfiguration;
-using EmitMapper.NetStandard.MappingConfiguration.MappingOperations.Interfaces;
+using EmitMapper.MappingConfiguration;
+using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
 using Xunit;
 
 namespace EmitMapper.Tests

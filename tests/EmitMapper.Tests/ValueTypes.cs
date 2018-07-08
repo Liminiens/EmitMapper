@@ -1,5 +1,4 @@
-﻿using EmitMapper.NetStandard;
-using Xunit;
+﻿using Xunit;
 
 namespace EmitMapper.Tests
 {

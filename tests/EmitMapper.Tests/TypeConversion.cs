@@ -1,4 +1,4 @@
-﻿using EmitMapper.NetStandard.MappingConfiguration;
+﻿using EmitMapper.MappingConfiguration;
 using Xunit;
 
 namespace EmitMapper.Tests

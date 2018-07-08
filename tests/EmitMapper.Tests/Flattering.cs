@@ -1,6 +1,5 @@
-﻿using EmitMapper.NetStandard;
-using EmitMapper.NetStandard.MappingConfiguration;
-using EmitMapper.NetStandard.MappingConfiguration.MappingOperations;
+﻿using EmitMapper.MappingConfiguration;
+using EmitMapper.MappingConfiguration.MappingOperations;
 using Xunit;
 
 namespace EmitMapper.Tests
