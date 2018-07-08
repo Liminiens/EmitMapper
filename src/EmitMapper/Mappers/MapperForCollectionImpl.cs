@@ -17,7 +17,7 @@ namespace EmitMapper.Mappers
     /// </summary>
     internal class MapperForCollectionImpl : CustomMapperImpl
     {
-        private ObjectsMapperDescr subMapper;
+        private ObjectsMapperDescr _subMapper;
 
         /// <summary>
         /// Copies object properties and members of "from" to object "to"
@@ -91,8 +91,8 @@ namespace EmitMapper.Mappers
                 }
                 else
                 {
-                    ObjectsMapperBaseImpl Mapper = mapperMannager.GetMapperImpl(obj.GetType(), obj.GetType(), _mappingConfigurator);
-                    iList.Add(Mapper.Map(obj));
+                    ObjectsMapperBaseImpl mapper = mapperMannager.GetMapperImpl(obj.GetType(), obj.GetType(), _mappingConfigurator);
+                    iList.Add(mapper.Map(obj));
                 }
             }
             return iList;
@@ -129,27 +129,27 @@ namespace EmitMapper.Mappers
         /// <summary>
         /// Creates an instance of Mapper for collections.
         /// </summary>
-        /// <param name="MapperName">Mapper name. It is used for registration in Mappers repositories.</param>
+        /// <param name="mapperName">Mapper name. It is used for registration in Mappers repositories.</param>
         /// <param name="mapperMannager">Mappers manager</param>
-        /// <param name="TypeFrom">Source type</param>
-        /// <param name="TypeTo">Destination type</param>
-        /// <param name="SubMapper"></param>
+        /// <param name="typeFrom">Source type</param>
+        /// <param name="typeTo">Destination type</param>
+        /// <param name="subMapper"></param>
         /// <returns></returns>
         public static MapperForCollectionImpl CreateInstance(
-            string MapperName,
+            string mapperName,
             ObjectMapperManager mapperMannager,
-            Type TypeFrom,
-            Type TypeTo,
-            ObjectsMapperDescr SubMapper,
+            Type typeFrom,
+            Type typeTo,
+            ObjectsMapperDescr subMapper,
             IMappingConfigurator mappingConfigurator
             )
         {
             TypeBuilder tb = DynamicAssemblyManager.DefineType(
-                "GenericListInv_" + MapperName,
+                "GenericListInv_" + mapperName,
                 typeof(MapperForCollectionImpl)
                 );
 
-            if (TypeTo.IsGenericType && TypeTo.GetGenericTypeDefinition() == typeof(List<>))
+            if (typeTo.IsGenericType && typeTo.GetGenericTypeDefinition() == typeof(List<>))
             {
                 MethodBuilder methodBuilder = tb.DefineMethod(
                     "CopyToListInvoke",
@@ -158,7 +158,7 @@ namespace EmitMapper.Mappers
                     new Type[] { typeof(IEnumerable) }
                     );
 
-                InvokeCopyImpl(TypeTo, "CopyToList").Compile(new CompilationContext(methodBuilder.GetILGenerator()));
+                InvokeCopyImpl(typeTo, "CopyToList").Compile(new CompilationContext(methodBuilder.GetILGenerator()));
 
                 methodBuilder = tb.DefineMethod(
                     "CopyToListScalarInvoke",
@@ -167,14 +167,14 @@ namespace EmitMapper.Mappers
                     new Type[] { typeof(object) }
                     );
 
-                InvokeCopyImpl(TypeTo, "CopyToListScalar").Compile(
+                InvokeCopyImpl(typeTo, "CopyToListScalar").Compile(
                     new CompilationContext(methodBuilder.GetILGenerator())
                     );
             }
 
             MapperForCollectionImpl result = (MapperForCollectionImpl)Activator.CreateInstance(tb.CreateTypeInfo().AsType());
-            result.Initialize(mapperMannager, TypeFrom, TypeTo, mappingConfigurator, null);
-            result.subMapper = SubMapper;
+            result.Initialize(mapperMannager, typeFrom, typeTo, mappingConfigurator, null);
+            result._subMapper = subMapper;
 
             return result;
         }
@@ -255,7 +255,7 @@ namespace EmitMapper.Mappers
                 int idx = 0;
                 foreach (object obj in from)
                 {
-                    result.SetValue(subMapper.mapper.Map(obj), idx++);
+                    result.SetValue(_subMapper.mapper.Map(obj), idx++);
                 }
                 return result;
 
@@ -308,8 +308,8 @@ namespace EmitMapper.Mappers
                 }
                 else
                 {
-                    ObjectsMapperBaseImpl Mapper = mapperMannager.GetMapperImpl(obj.GetType(), obj.GetType(), _mappingConfigurator);
-                    result.Add(Mapper.Map(obj));
+                    ObjectsMapperBaseImpl mapper = mapperMannager.GetMapperImpl(obj.GetType(), obj.GetType(), _mappingConfigurator);
+                    result.Add(mapper.Map(obj));
                 }
             }
             return result;
@@ -323,8 +323,8 @@ namespace EmitMapper.Mappers
                 result.Add(from);
                 return result;
             }
-            ObjectsMapperBaseImpl Mapper = mapperMannager.GetMapperImpl(from.GetType(), from.GetType(), _mappingConfigurator);
-            result.Add(Mapper.Map(from));
+            ObjectsMapperBaseImpl mapper = mapperMannager.GetMapperImpl(from.GetType(), from.GetType(), _mappingConfigurator);
+            result.Add(mapper.Map(from));
             return result;
         }
 
@@ -341,7 +341,7 @@ namespace EmitMapper.Mappers
             }
             foreach (object obj in from)
             {
-                result.Add((T)subMapper.mapper.Map(obj));
+                result.Add((T)_subMapper.mapper.Map(obj));
             }
             return result;
         }
@@ -353,7 +353,7 @@ namespace EmitMapper.Mappers
         protected List<T> CopyToListScalar<T>(object from)
         {
             List<T> result = new List<T>(1);
-            result.Add((T)subMapper.mapper.Map(from));
+            result.Add((T)_subMapper.mapper.Map(from));
             return result;
         }
         protected virtual object CopyToListScalarInvoke(object from)
@@ -364,7 +364,7 @@ namespace EmitMapper.Mappers
         private Array CopyScalarToArray(object scalar)
         {
             Array result = Array.CreateInstance(typeTo.GetElementType(), 1);
-            result.SetValue(subMapper.mapper.Map(scalar), 0);
+            result.SetValue(_subMapper.mapper.Map(scalar), 0);
             return result;
         }
     }
