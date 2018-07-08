@@ -15,7 +15,7 @@ namespace EmitMapper.Mappers
     /// Mapper for collections. It can copy Array, List<>, ArrayList collections. 
     /// Collection type in source object and destination object can differ.
     /// </summary>
-    internal class MapperForCollectionImpl : CustomMapperImpl
+    public class MapperForCollectionImpl : CustomMapperImpl
     {
         private ObjectsMapperDescr _subMapper;
 

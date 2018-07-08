@@ -3,7 +3,7 @@ using EmitMapper.MappingConfiguration;
 
 namespace EmitMapper.Mappers
 {
-    internal abstract class CustomMapperImpl: ObjectsMapperBaseImpl
+    public abstract class CustomMapperImpl: ObjectsMapperBaseImpl
     {
         public CustomMapperImpl(
             ObjectMapperManager mapperMannager, 
