@@ -13,7 +13,7 @@ namespace EmitMapper.EmitInvoker.Delegates
 {
     public static class DelegateInvoker
     {
-        private static ThreadSaveCache _typesCache = new ThreadSaveCache();
+        private static readonly ThreadSaveCache _typesCache = new ThreadSaveCache();
 
         public static DelegateInvokerBase GetDelegateInvoker(Delegate del)
         {

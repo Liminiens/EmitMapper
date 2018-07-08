@@ -20,7 +20,7 @@ namespace EmitMapper.Mappers
         private ObjectsMapperDescr _subMapper;
 
         /// <summary>
-        /// Copies object properties and members of "from" to object "to"
+        /// Copies object properties and members of "fromEnumerable" to object "to"
         /// </summary>
         /// <param name="from">Source object</param>
         /// <param name="to">Destination object</param>
@@ -73,13 +73,13 @@ namespace EmitMapper.Mappers
             return null;
         }
 
-        private object CopyToIList(IList iList, object from)
+        private object CopyToIList(IList iList, object fromEnumerable)
         {
             if (iList == null)
             {
                 iList = (IList)Activator.CreateInstance(typeTo);
             }
-            foreach (object obj in (from is IEnumerable ? (IEnumerable)from : new[] { from }))
+            foreach (object obj in fromEnumerable is IEnumerable enumerable ? enumerable : new[] { fromEnumerable })
             {
                 if (obj == null)
                 {
@@ -99,7 +99,7 @@ namespace EmitMapper.Mappers
         }
 
         /// <summary>
-        /// Copies object properties and members of "from" to object "to"
+        /// Copies object properties and members of "fromEnumerable" to object "to"
         /// </summary>
         /// <param name="from">Source object</param>
         /// <param name="to">Destination object</param>
@@ -155,7 +155,7 @@ namespace EmitMapper.Mappers
                     "CopyToListInvoke",
                     MethodAttributes.Family | MethodAttributes.Virtual,
                     typeof(object),
-                    new Type[] { typeof(IEnumerable) }
+                    new[] { typeof(IEnumerable) }
                     );
 
                 InvokeCopyImpl(typeTo, "CopyToList").Compile(new CompilationContext(methodBuilder.GetILGenerator()));
@@ -164,7 +164,7 @@ namespace EmitMapper.Mappers
                     "CopyToListScalarInvoke",
                     MethodAttributes.Family | MethodAttributes.Virtual,
                     typeof(object),
-                    new Type[] { typeof(object) }
+                    new[] { typeof(object) }
                     );
 
                 InvokeCopyImpl(typeTo, "CopyToListScalar").Compile(
@@ -184,7 +184,7 @@ namespace EmitMapper.Mappers
             var mi = typeof(MapperForCollectionImpl).GetMethod(
                copyMethodName,
                BindingFlags.Instance | BindingFlags.Public
-            ).MakeGenericMethod(new Type[] { ExtractElementType(copiedObjectType) });
+            ).MakeGenericMethod(ExtractElementType(copiedObjectType));
 
             return new AstReturn()
             {
@@ -271,36 +271,34 @@ namespace EmitMapper.Mappers
             }
         }
 
-        private ArrayList CopyToArrayList(IEnumerable from)
+        private ArrayList CopyToArrayList(IEnumerable fromEnumerable)
         {
             if (ShallowCopy)
             {
-                if (from is ICollection)
+                if (fromEnumerable is ICollection collection)
                 {
-                    return new ArrayList((ICollection)from);
+                    return new ArrayList(collection);
                 }
-                else
+
+                ArrayList res = new ArrayList();
+                foreach (object obj in fromEnumerable)
                 {
-                    ArrayList res = new ArrayList();
-                    foreach (object obj in from)
-                    {
-                        res.Add(obj);
-                    }
-                    return res;
+                    res.Add(obj);
                 }
+                return res;
             }
 
             ArrayList result = new ArrayList();
-            if (from is ICollection)
+            if (fromEnumerable is ICollection coll)
             {
-                result = new ArrayList(((ICollection)from).Count);
+                result = new ArrayList(coll.Count);
             }
             else
             {
                 result = new ArrayList();
             }
 
-            foreach (object obj in from)
+            foreach (object obj in fromEnumerable)
             {
                 if (obj == null)
                 {
@@ -328,18 +326,18 @@ namespace EmitMapper.Mappers
             return result;
         }
 
-        protected List<T> CopyToList<T>(IEnumerable from)
+        protected List<T> CopyToList<T>(IEnumerable fromEnumerable)
         {
             List<T> result;
-            if (from is ICollection)
+            if (fromEnumerable is ICollection collection)
             {
-                result = new List<T>(((ICollection)from).Count);
+                result = new List<T>(collection.Count);
             }
             else
             {
                 result = new List<T>();
             }
-            foreach (object obj in from)
+            foreach (object obj in fromEnumerable)
             {
                 result.Add((T)_subMapper.mapper.Map(obj));
             }
