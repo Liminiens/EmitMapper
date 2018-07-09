@@ -26,7 +26,7 @@ Customization using default configurator
 
 Low-level customization using custom configuratorors
 
-#Benchmarks
+# Benchmarks
 
 ```
 BenchmarkDotNet=v0.10.14, OS=Windows 10.0.17134
