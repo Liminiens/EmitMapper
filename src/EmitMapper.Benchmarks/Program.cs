@@ -1,4 +1,8 @@
 ﻿using System;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 
 namespace EmitMapper.Benchmarks

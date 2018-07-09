@@ -12,33 +12,12 @@ namespace EmitMapper
     /// </summary>
     public class ObjectMapperManager
     {
-        public static ObjectMapperManager _defaultInstance = null;
+        private static readonly Lazy<ObjectMapperManager> LazyDefaultInstance = new Lazy<ObjectMapperManager>();
 
-        public static ObjectMapperManager DefaultInstance
-        {
-            get
-            {
-                if (_defaultInstance == null)
-                {
-                    lock (typeof(ObjectMapperManager))
-                    {
-                        if (_defaultInstance == null)
-                        {
-                            _defaultInstance = new ObjectMapperManager();
-                        }
-                    }
-                }
-                return _defaultInstance;
-            }
-        }
+        public static ObjectMapperManager DefaultInstance => LazyDefaultInstance.Value;
 
         public ObjectMapperManager()
         {
-            lock (typeof(ObjectMapperManager))
-            {
-                _instanceCount++;
-                instanceCount = _instanceCount;
-            }
         }
 
         /// <summary>
@@ -92,9 +71,6 @@ namespace EmitMapper
         }
 
         #region Non-public members
-
-        private static int _instanceCount = 0;
-        private int instanceCount = 0;
 
         private Dictionary<MapperKey, int> objectsMapperIds = new Dictionary<MapperKey, int>();
         private List<ObjectsMapperDescr> objectsMappersList = new List<ObjectsMapperDescr>();
@@ -227,7 +203,7 @@ namespace EmitMapper
         {
             string fromFullName = from == null ? "null" : from.FullName;
             string toFullName = to == null ? "null" : to.FullName;
-            return "ObjectsMapper" + instanceCount + "_" + fromFullName + "_" + toFullName;
+            return "ObjectsMapper_" + fromFullName + "_" + toFullName;
         }
 
         #endregion
