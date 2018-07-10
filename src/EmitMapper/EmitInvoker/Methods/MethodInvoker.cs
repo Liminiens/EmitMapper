@@ -43,26 +43,23 @@ namespace EmitMapper.EmitInvoker.Methods
         private static Type BuildFuncCallerType(string typeName, MethodInfo mi)
         {
             var par = mi.GetParameters();
-            Type funcCallerType = null;
-            if (par.Length == 0)
+            Type funcCallerType;
+            switch (par.Length)
             {
-                funcCallerType = typeof(MethodInvokerFunc_0);
-            }
-            if (par.Length == 1)
-            {
-                funcCallerType = typeof(MethodInvokerFunc_1);
-            }
-            if (par.Length == 2)
-            {
-                funcCallerType = typeof(MethodInvokerFunc_2);
-            }
-            if (par.Length == 3)
-            {
-                funcCallerType = typeof(MethodInvokerFunc_3);
-            }
-            else
-            {
-                throw new EmitMapperException("too many method parameters");
+                case 0:
+                    funcCallerType = typeof(MethodInvokerFunc_0);
+                    break;
+                case 1:
+                    funcCallerType = typeof(MethodInvokerFunc_1);
+                    break;
+                case 2:
+                    funcCallerType = typeof(MethodInvokerFunc_2);
+                    break;
+                case 3:
+                    funcCallerType = typeof(MethodInvokerFunc_3);
+                    break;
+                default:
+                    throw new EmitMapperException("too many method parameters");
             }
 
             var tb = DynamicAssemblyManager.DefineType(typeName, funcCallerType);

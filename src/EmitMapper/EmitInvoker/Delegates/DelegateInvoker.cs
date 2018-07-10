@@ -86,26 +86,24 @@ namespace EmitMapper.EmitInvoker.Delegates
         private static Type BuildActionCallerType(string typeName, Delegate del)
         {
             var par = del.Method.GetParameters();
-            Type actionCallerType = null;
-            if (par.Length == 0)
+
+            Type actionCallerType;
+            switch (par.Length)
             {
-                actionCallerType = typeof(DelegateInvokerAction_0);
-            }
-            else if (par.Length == 1)
-            {
-                actionCallerType = typeof(DelegateInvokerAction_1);
-            }
-            else if (par.Length == 2)
-            {
-                actionCallerType = typeof(DelegateInvokerAction_2);
-            }
-            else if (par.Length == 3)
-            {
-                actionCallerType = typeof(DelegateInvokerAction_3);
-            }
-            else
-            {
-                new EmitMapperException("too many method parameters");
+                case 0:
+                    actionCallerType = typeof(DelegateInvokerAction_0);
+                    break;
+                case 1:
+                    actionCallerType = typeof(DelegateInvokerAction_1);
+                    break;
+                case 2:
+                    actionCallerType = typeof(DelegateInvokerAction_2);
+                    break;
+                case 3:
+                    actionCallerType = typeof(DelegateInvokerAction_3);
+                    break;
+                default:
+                    throw new EmitMapperException("too many method parameters");
             }
 
             var tb = DynamicAssemblyManager.DefineType(typeName, actionCallerType);
