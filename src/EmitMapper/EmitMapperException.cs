@@ -1,5 +1,5 @@
-﻿using System;
-using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
+﻿using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
+using System;
 
 namespace EmitMapper
 {
@@ -29,8 +29,7 @@ namespace EmitMapper
 
         private static string BuildMessage(string message, IMappingOperation mappingOperation)
         {
-            return message + " " + mappingOperation.ToString();
+            return $"{message} {mappingOperation}";
         }
-
     }
 }
