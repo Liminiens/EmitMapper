@@ -1,6 +1,6 @@
 ﻿namespace EmitMapper.MappingConfiguration.MappingOperations.Interfaces
 {
-	public interface IMappingOperation
-	{
-	}
+    public interface IMappingOperation
+    {
+    }
 }

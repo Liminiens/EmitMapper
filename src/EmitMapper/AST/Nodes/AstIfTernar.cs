@@ -6,19 +6,9 @@ namespace EmitMapper.AST.Nodes
 {
     class AstIfTernar : IAstRefOrValue
     {
-        public IAstRefOrValue Condition;
-        public IAstRefOrValue TrueBranch;
-        public IAstRefOrValue FalseBranch;
-
-        #region IAstNode Members
-
-        public Type ItemType
-        {
-            get 
-            {
-                return TrueBranch.ItemType;
-            }
-        }
+        public readonly IAstRefOrValue Condition;
+        public readonly IAstRefOrValue TrueBranch;
+        public readonly IAstRefOrValue FalseBranch;
 
         public AstIfTernar(IAstRefOrValue condition, IAstRefOrValue trueBranch, IAstRefOrValue falseBranch)
         {
@@ -27,10 +17,12 @@ namespace EmitMapper.AST.Nodes
                 throw new EmitMapperException("Types mismatch");
             }
 
-            this.Condition = condition;
-            this.TrueBranch = trueBranch;
-            this.FalseBranch = falseBranch;
+            Condition = condition;
+            TrueBranch = trueBranch;
+            FalseBranch = falseBranch;
         }
+
+        public Type ItemType => TrueBranch.ItemType;
 
         public void Compile(CompilationContext context)
         {
@@ -40,23 +32,15 @@ namespace EmitMapper.AST.Nodes
             Condition.Compile(context);
             context.Emit(OpCodes.Brfalse, elseLabel);
 
-            if (TrueBranch != null)
-            {
-                TrueBranch.Compile(context);
-            }
+            TrueBranch?.Compile(context);
             if (FalseBranch != null)
             {
                 context.Emit(OpCodes.Br, endIfLabel);
             }
 
             context.ILGenerator.MarkLabel(elseLabel);
-            if (FalseBranch != null)
-            {
-                FalseBranch.Compile(context);
-            }
+            FalseBranch?.Compile(context);
             context.ILGenerator.MarkLabel(endIfLabel);
         }
-
-        #endregion
     }
 }

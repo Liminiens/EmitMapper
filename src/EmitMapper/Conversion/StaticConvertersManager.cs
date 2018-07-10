@@ -1,60 +1,41 @@
-﻿using System;
+﻿using EmitMapper.EmitInvoker.Methods;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using EmitMapper.EmitInvoker.Methods;
 
 namespace EmitMapper.Conversion
 {
     public class StaticConvertersManager
     {
-        private class TypesPair
+        private readonly Dictionary<TypesPair, MethodInfo> _typesMethods = new Dictionary<TypesPair, MethodInfo>();
+        private readonly List<Func<Type, Type, MethodInfo>> _typesMethodsFunc = new List<Func<Type, Type, MethodInfo>>();
+
+        private static StaticConvertersManager _defaultInstance;
+
+        private static readonly Dictionary<MethodInfo, Func<object, object>> ConvertersFunc
+            = new Dictionary<MethodInfo, Func<object, object>>();
+        public static StaticConvertersManager DefaultInstance
         {
-            public Type typeFrom;
-            public Type typeTo;
-
-            public override int GetHashCode()
+            get
             {
-                return typeFrom.GetHashCode() + typeTo.GetHashCode();
+                if (_defaultInstance == null)
+                {
+                    lock (typeof(StaticConvertersManager))
+                    {
+                        if (_defaultInstance == null)
+                        {
+                            _defaultInstance = new StaticConvertersManager();
+                            _defaultInstance.AddConverterClass(typeof(System.Convert));
+                            _defaultInstance.AddConverterClass(typeof(EMConvert));
+                            _defaultInstance.AddConverterClass(typeof(NullableConverter));
+                            _defaultInstance.AddConverterFunc(EMConvert.GetConversionMethod);
+                        }
+                    }
+                }
+                return _defaultInstance;
             }
-
-            public override bool Equals(object obj)
-            {
-                var rhs = (TypesPair)obj;
-                return typeFrom == rhs.typeFrom && typeTo == rhs.typeTo;
-            }
-
-			public override string ToString()
-			{
-				return typeFrom.ToString() + " -> " + typeTo.ToString();
-			}
         }
-
-		private static StaticConvertersManager _defaultInstance;
-		public static StaticConvertersManager DefaultInstance
-		{
-			get
-			{
-				if (_defaultInstance == null)
-				{
-					lock (typeof(StaticConvertersManager))
-					{
-						if (_defaultInstance == null)
-						{
-							_defaultInstance = new StaticConvertersManager();
-							_defaultInstance.AddConverterClass(typeof(System.Convert));
-							_defaultInstance.AddConverterClass(typeof(EMConvert));
-							_defaultInstance.AddConverterClass(typeof(NullableConverter));
-							_defaultInstance.AddConverterFunc(EMConvert.GetConversionMethod);
-						}
-					}
-				}
-				return _defaultInstance;
-			}
-		}
-
-        private Dictionary<TypesPair, MethodInfo> _typesMethods = new Dictionary<TypesPair, MethodInfo>();
-        private List<Func<Type, Type, MethodInfo>> _typesMethodsFunc = new List<Func<Type,Type,MethodInfo>>();
 
         public void AddConverterClass(Type converterClass)
         {
@@ -95,31 +76,49 @@ namespace EmitMapper.Conversion
                 }
             }
 
-			MethodInfo res = null;
-			_typesMethods.TryGetValue(new TypesPair { typeFrom = from, typeTo = to }, out res);
-			return res;
+            _typesMethods.TryGetValue(new TypesPair { typeFrom = from, typeTo = to }, out var res);
+            return res;
         }
 
-		private static Dictionary<MethodInfo, Func<object, object>> _convertersFunc = new Dictionary<MethodInfo, Func<object, object>>();
+        public Func<object, object> GetStaticConverterFunc(Type from, Type to)
+        {
+            var mi = GetStaticConverter(from, to);
+            if (mi == null)
+            {
+                return null;
+            }
+            lock (ConvertersFunc)
+            {
+                if (ConvertersFunc.TryGetValue(mi, out var res))
+                {
+                    return res;
+                }
+                res = ((MethodInvokerFunc_1)MethodInvoker.GetMethodInvoker(null, mi)).CallFunc;
+                ConvertersFunc.Add(mi, res);
+                return res;
+            }
+        }
 
-		public Func<object, object> GetStaticConverterFunc(Type from, Type to)
-		{
-			var mi = GetStaticConverter(from, to);
-			if (mi == null)
-			{
-				return null;
-			}
-			lock (_convertersFunc)
-			{
-				Func<object, object> res = null;
-				if (_convertersFunc.TryGetValue(mi, out res))
-				{
-					return res;
-				}
-				res = ((MethodInvokerFunc_1)MethodInvoker.GetMethodInvoker(null, mi)).CallFunc;
-				_convertersFunc.Add(mi, res);
-				return res;
-			}
-		}
+        private class TypesPair
+        {
+            public Type typeFrom;
+            public Type typeTo;
+
+            public override int GetHashCode()
+            {
+                return typeFrom.GetHashCode() + typeTo.GetHashCode();
+            }
+
+            public override bool Equals(object obj)
+            {
+                var rhs = (TypesPair)obj;
+                return typeFrom == rhs.typeFrom && typeTo == rhs.typeTo;
+            }
+
+            public override string ToString()
+            {
+                return typeFrom.ToString() + " -> " + typeTo.ToString();
+            }
+        }
     }
 }

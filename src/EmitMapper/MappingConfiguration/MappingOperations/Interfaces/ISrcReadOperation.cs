@@ -1,6 +1,6 @@
 ﻿namespace EmitMapper.MappingConfiguration.MappingOperations.Interfaces
 {
-	public interface ISrcReadOperation : ISrcOperation
-	{
-	}
+    public interface ISrcReadOperation : ISrcOperation
+    {
+    }
 }

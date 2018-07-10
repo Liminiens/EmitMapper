@@ -1,15 +1,15 @@
-﻿using System;
-using System.Reflection;
-using System.Reflection.Emit;
-using EmitMapper.AST;
+﻿using EmitMapper.AST;
 using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
 using EmitMapper.AST.Nodes;
 using EmitMapper.Utils;
+using System;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace EmitMapper.EmitBuilders
 {
-    class CreateTargetInstanceBuilder
+    internal class CreateTargetInstanceBuilder
     {
         public static void BuildCreateTargetInstanceMethod(Type type, TypeBuilder typeBuilder)
         {

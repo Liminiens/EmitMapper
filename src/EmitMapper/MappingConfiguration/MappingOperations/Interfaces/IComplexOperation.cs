@@ -2,7 +2,7 @@
 
 namespace EmitMapper.MappingConfiguration.MappingOperations.Interfaces
 {
-    interface IComplexOperation: IMappingOperation
+    internal interface IComplexOperation : IMappingOperation
     {
         List<IMappingOperation> Operations { get; set; }
     }

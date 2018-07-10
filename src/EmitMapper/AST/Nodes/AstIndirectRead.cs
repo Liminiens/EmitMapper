@@ -1,37 +1,31 @@
-﻿using System;
-using System.Reflection.Emit;
-using EmitMapper.AST.Helpers;
+﻿using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
+using System;
+using System.Reflection.Emit;
 
 namespace EmitMapper.AST.Nodes
 {
-    abstract class AstIndirectRead : IAstStackItem
+    internal abstract class AstIndirectRead : IAstStackItem
     {
         public Type ArgumentType;
 
-        public Type ItemType
-        {
-            get
-            {
-                return ArgumentType;
-            }
-        }
+        public Type ItemType => ArgumentType;
 
         public abstract void Compile(CompilationContext context);
     }
 
-    class AstIndirectReadRef : AstIndirectRead, IAstRef
+    internal class AstIndirectReadRef : AstIndirectRead, IAstRef
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsRef(ItemType);
             context.Emit(OpCodes.Ldind_Ref, ItemType);
         }
     }
 
-    class AstIndirectReadValue : AstIndirectRead, IAstValue
+    internal class AstIndirectReadValue : AstIndirectRead, IAstValue
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
             if (ItemType == typeof(Int32))
@@ -45,9 +39,9 @@ namespace EmitMapper.AST.Nodes
         }
     }
 
-    class AstIndirectReadAddr : AstIndirectRead, IAstAddr
+    internal class AstIndirectReadAddr : AstIndirectRead, IAstAddr
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
         }

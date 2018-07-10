@@ -1,34 +1,25 @@
-﻿using System;
-using System.Reflection.Emit;
-using EmitMapper.AST.Helpers;
+﻿using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
+using System;
+using System.Reflection.Emit;
 
 namespace EmitMapper.AST.Nodes
 {
-	class AstCastclass : IAstRefOrValue
-	{
+    internal class AstCastclass : IAstRefOrValue
+    {
         protected IAstRefOrValue Value;
         protected Type TargetType;
 
         public AstCastclass(IAstRefOrValue value, Type targetType)
-		{
-			Value = value;
-			TargetType = targetType;
-		}
+        {
+            Value = value;
+            TargetType = targetType;
+        }
 
-		#region IAstStackItem Members
+        public Type ItemType => TargetType;
 
-		public Type ItemType
-		{
-			get { return TargetType; }
-		}
-
-		#endregion
-
-		#region IAstNode Members
-
-		public virtual void Compile(CompilationContext context)
-		{
+        public virtual void Compile(CompilationContext context)
+        {
 
             if (Value.ItemType != TargetType)
             {
@@ -50,31 +41,29 @@ namespace EmitMapper.AST.Nodes
             {
                 Value.Compile(context);
             }
-		}
+        }
+    }
 
-		#endregion
-	}
-
-    class AstCastclassRef : AstCastclass, IAstRef
+    internal class AstCastclassRef : AstCastclass, IAstRef
     {
-        public AstCastclassRef(IAstRefOrValue value, Type targetType): base(value, targetType)
-		{
-		}
+        public AstCastclassRef(IAstRefOrValue value, Type targetType) : base(value, targetType)
+        {
+        }
 
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
 
-    class AstCastclassValue : AstCastclass, IAstValue
+    internal class AstCastclassValue : AstCastclass, IAstValue
     {
-        public AstCastclassValue(IAstRefOrValue value, Type targetType): base(value, targetType)
-		{
-		}
+        public AstCastclassValue(IAstRefOrValue value, Type targetType) : base(value, targetType)
+        {
+        }
 
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);

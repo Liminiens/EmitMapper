@@ -1,44 +1,37 @@
-﻿using System;
+﻿using EmitMapper.AST.Interfaces;
+using System;
 using System.Reflection.Emit;
-using EmitMapper.AST.Interfaces;
 
 namespace EmitMapper.AST.Nodes
 {
-	/// <summary>
-	/// Generates "value ?? ifNullValue" expression.
-	/// </summary>
-	class AstIfNull : IAstRefOrValue
-	{
-	    readonly IAstRef _value;
-	    readonly IAstRefOrValue _ifNullValue;
+    /// <summary>
+    /// Generates "value ?? ifNullValue" expression.
+    /// </summary>
+    internal class AstIfNull : IAstRefOrValue
+    {
+        private readonly IAstRef _value;
+        private readonly IAstRefOrValue _ifNullValue;
+        public AstIfNull(IAstRef value, IAstRefOrValue ifNullValue)
+        {
+            _value = value;
+            _ifNullValue = ifNullValue;
+            if (!_value.ItemType.IsAssignableFrom(_ifNullValue.ItemType))
+            {
+                throw new EmitMapperException("Incorrect ifnull expression");
+            }
+        }
 
-		public Type ItemType
-		{
-			get 
-			{
-				return _value.ItemType;
-			}
-		}
+        public Type ItemType => _value.ItemType;
 
-		public AstIfNull(IAstRef value, IAstRefOrValue ifNullValue)
-		{
-			_value = value;
-			_ifNullValue = ifNullValue;
-			if (!_value.ItemType.IsAssignableFrom(_ifNullValue.ItemType))
-			{
-				throw new EmitMapperException("Incorrect ifnull expression");
-			}
-		}
-
-		public void Compile(CompilationContext context)
-		{
-			Label ifNotNullLabel = context.ILGenerator.DefineLabel();
-			_value.Compile(context);
-			context.Emit(OpCodes.Dup);
-			context.Emit(OpCodes.Brtrue_S, ifNotNullLabel);
-			context.Emit(OpCodes.Pop);
-			_ifNullValue.Compile(context);
-			context.ILGenerator.MarkLabel(ifNotNullLabel);
-		}
-	}
+        public void Compile(CompilationContext context)
+        {
+            Label ifNotNullLabel = context.ILGenerator.DefineLabel();
+            _value.Compile(context);
+            context.Emit(OpCodes.Dup);
+            context.Emit(OpCodes.Brtrue_S, ifNotNullLabel);
+            context.Emit(OpCodes.Pop);
+            _ifNullValue.Compile(context);
+            context.ILGenerator.MarkLabel(ifNotNullLabel);
+        }
+    }
 }

@@ -1,30 +1,27 @@
-﻿using System;
+﻿using EmitMapper.AST.Interfaces;
+using System;
 using System.Reflection.Emit;
-using EmitMapper.AST.Interfaces;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstExceptionHandlingBlock : IAstNode
+    internal class AstExceptionHandlingBlock : IAstNode
     {
-        readonly IAstNode _protectedBlock;
-        readonly IAstNode _handlerBlock;
-        readonly Type _exceptionType;
-        readonly LocalBuilder _eceptionVariable;
+        private readonly IAstNode _protectedBlock;
+        private readonly IAstNode _handlerBlock;
+        private readonly Type _exceptionType;
+        private readonly LocalBuilder _eceptionVariable;
 
         public AstExceptionHandlingBlock(
-            IAstNode protectedBlock, 
-            IAstNode handlerBlock, 
+            IAstNode protectedBlock,
+            IAstNode handlerBlock,
             Type exceptionType,
             LocalBuilder eceptionVariable)
         {
-            this._protectedBlock = protectedBlock;
-            this._handlerBlock = handlerBlock;
-            this._exceptionType = exceptionType;
-            this._eceptionVariable = eceptionVariable;
+            _protectedBlock = protectedBlock;
+            _handlerBlock = handlerBlock;
+            _exceptionType = exceptionType;
+            _eceptionVariable = eceptionVariable;
         }
-
-        #region IAstNode Members
-
         public void Compile(CompilationContext context)
         {
             var endBlock = context.ILGenerator.BeginExceptionBlock();
@@ -34,7 +31,5 @@ namespace EmitMapper.AST.Nodes
             _handlerBlock.Compile(context);
             context.ILGenerator.EndExceptionBlock();
         }
-
-        #endregion
     }
 }

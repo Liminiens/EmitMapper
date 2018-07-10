@@ -1,53 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using EmitMapper.Conversion;
+﻿using EmitMapper.Conversion;
 using EmitMapper.MappingConfiguration.MappingOperations;
 using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
 using EmitMapper.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace EmitMapper.MappingConfiguration
 {
     public abstract class MapConfigBaseImpl : IMappingConfigurator
     {
         private string _configurationName;
-        private TypeDictionary<Delegate> _customConverters = new TypeDictionary<Delegate>();
-        private TypeDictionary<ICustomConverterProvider> _customConvertersGeneric = new TypeDictionary<ICustomConverterProvider>();
-        private TypeDictionary<Delegate> _customConstructors = new TypeDictionary<Delegate>();
-        private TypeDictionary<Delegate> _nullSubstitutors = new TypeDictionary<Delegate>();
-        private TypeDictionary<Delegate> _postProcessors = new TypeDictionary<Delegate>();
-        private TypeDictionary<List<string>> _ignoreMembers = new TypeDictionary<List<string>>();
+        private readonly TypeDictionary<Delegate> _customConverters = new TypeDictionary<Delegate>();
+        private readonly TypeDictionary<ICustomConverterProvider> _customConvertersGeneric = new TypeDictionary<ICustomConverterProvider>();
+        private readonly TypeDictionary<Delegate> _customConstructors = new TypeDictionary<Delegate>();
+        private readonly TypeDictionary<Delegate> _nullSubstitutors = new TypeDictionary<Delegate>();
+        private readonly TypeDictionary<Delegate> _postProcessors = new TypeDictionary<Delegate>();
+        private readonly TypeDictionary<List<string>> _ignoreMembers = new TypeDictionary<List<string>>();
 
         public abstract IMappingOperation[] GetMappingOperations(Type from, Type to);
 
-		public MapConfigBaseImpl()
-		{
-			RegisterDefaultCollectionConverters();
-		}
+        protected MapConfigBaseImpl()
+        {
+            RegisterDefaultCollectionConverters();
+        }
 
         public virtual string GetConfigurationName()
         {
-			return _configurationName;
+            return _configurationName;
         }
 
-		public virtual void BuildConfigurationName()
-		{
-			_configurationName = 
-				new[] 
-				{ 
-					ToStr(_customConverters),
-					ToStr(_nullSubstitutors),
-					ToStr(_ignoreMembers),
+        public virtual void BuildConfigurationName()
+        {
+            _configurationName =
+                new[]
+                {
+                    ToStr(_customConverters),
+                    ToStr(_nullSubstitutors),
+                    ToStr(_ignoreMembers),
                     ToStr(_postProcessors),
-					ToStr(_customConstructors),
-				}.ToCSV(";");
-		}
+                    ToStr(_customConstructors),
+                }.ToCSV(";");
+        }
 
-		public virtual StaticConvertersManager GetStaticConvertersManager()
-		{
-			return null;
-		}
+        public virtual StaticConvertersManager GetStaticConvertersManager()
+        {
+            return null;
+        }
 
         public virtual IRootMappingOperation GetRootMappingOperation(Type from, Type to)
         {
@@ -79,14 +79,14 @@ namespace EmitMapper.MappingConfiguration
             return this;
         }
 
-		/// <summary>
-		/// Define conversion for a generic. It is able to convert not one particular class but all generic family
-		/// providing a generic converter.
-		/// </summary>
-		/// <param name="from">Type of source. Can be also generic class or abstract array.</param>
-		/// <param name="to">Type of destination. Can be also generic class or abstract array.</param>
-		/// <param name="converterProvider">Provider for getting detailed information about generic conversion</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Define conversion for a generic. It is able to convert not one particular class but all generic family
+        /// providing a generic converter.
+        /// </summary>
+        /// <param name="from">Type of source. Can be also generic class or abstract array.</param>
+        /// <param name="to">Type of destination. Can be also generic class or abstract array.</param>
+        /// <param name="converterProvider">Provider for getting detailed information about generic conversion</param>
+        /// <returns></returns>
         public IMappingConfigurator ConvertGeneric(Type from, Type to, ICustomConverterProvider converterProvider)
         {
             _customConvertersGeneric.Add(new[] { from, to }, converterProvider);
@@ -152,12 +152,12 @@ namespace EmitMapper.MappingConfiguration
             return this;
         }
 
-		/// <summary>
-		/// Define postprocessor for specified type
-		/// </summary>
-		/// <typeparam name="T">Objects of this type and all it's descendants will be postprocessed</typeparam>
-		/// <param name="postProcessor"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// Define postprocessor for specified type
+        /// </summary>
+        /// <typeparam name="T">Objects of this type and all it's descendants will be postprocessed</typeparam>
+        /// <param name="postProcessor"></param>
+        /// <returns></returns>
         public IMappingConfigurator PostProcess<T>(ValuesPostProcessor<T> postProcessor)
         {
             _postProcessors.Add(new[] { typeof(T) }, postProcessor);
@@ -184,36 +184,33 @@ namespace EmitMapper.MappingConfiguration
             List<IMappingOperation> result = new List<IMappingOperation>();
             foreach (var op in operations)
             {
-                if (op is IReadWriteOperation)
+                if (op is IReadWriteOperation rwop)
                 {
-                    var o = op as IReadWriteOperation;
-                    if (TestIgnore(from, to, o.Source, o.Destination))
+                    if (TestIgnore(from, to, rwop.Source, rwop.Destination))
                     {
                         continue;
                     }
 
-                    o.NullSubstitutor = _nullSubstitutors.GetValue(new[] { o.Source.MemberType, o.Destination.MemberType });
-                    o.TargetConstructor = _customConstructors.GetValue(new[] { o.Destination.MemberType });
-                    o.Converter = _customConverters.GetValue(new[] { o.Source.MemberType, o.Destination.MemberType });
-                    if (o.Converter == null)
+                    rwop.NullSubstitutor = _nullSubstitutors.GetValue(new[] { rwop.Source.MemberType, rwop.Destination.MemberType });
+                    rwop.TargetConstructor = _customConstructors.GetValue(new[] { rwop.Destination.MemberType });
+                    rwop.Converter = _customConverters.GetValue(new[] { rwop.Source.MemberType, rwop.Destination.MemberType });
+                    if (rwop.Converter == null)
                     {
-                        o.Converter = GetGenericConverter(o.Source.MemberType, o.Destination.MemberType);
+                        rwop.Converter = GetGenericConverter(rwop.Source.MemberType, rwop.Destination.MemberType);
                     }
                 }
-                if (op is ReadWriteComplex)
+                if (op is ReadWriteComplex rwcop)
                 {
-                    var o = op as ReadWriteComplex;
-                    o.ValuesPostProcessor = _postProcessors.GetValue(new[] { o.Destination.MemberType });
+                    rwcop.ValuesPostProcessor = _postProcessors.GetValue(new[] { rwcop.Destination.MemberType });
                 }
-                if (op is IComplexOperation)
+                if (op is IComplexOperation cop)
                 {
-                    var o = op as IComplexOperation;
-                    var orw = op as IReadWriteOperation;
-                    o.Operations =
+                    var orw = cop as IReadWriteOperation;
+                    cop.Operations =
                         FilterOperations(
                             orw == null ? from : orw.Source.MemberType,
                             orw == null ? to : orw.Destination.MemberType,
-                            o.Operations
+                            cop.Operations
                         ).ToList();
                 }
 
@@ -251,9 +248,9 @@ namespace EmitMapper.MappingConfiguration
             MethodInfo mi = genericConverter.GetMethod(converterDescr.ConversionMethodName);
 
             object converterObj = Activator.CreateInstance(genericConverter);
-            if (converterObj is ICustomConverter)
+            if (converterObj is ICustomConverter customConverter)
             {
-                ((ICustomConverter)converterObj).Initialize(from, to, this);
+                customConverter.Initialize(from, to, this);
             }
 
             return Delegate.CreateDelegate(
@@ -290,9 +287,9 @@ namespace EmitMapper.MappingConfiguration
             return t == null ? "" : t.ToString();
         }
 
-		protected virtual void RegisterDefaultCollectionConverters()
-		{
-			ConvertGeneric(typeof(ICollection<>), typeof(Array), new ArraysConverterProvider());
-		}
+        protected virtual void RegisterDefaultCollectionConverters()
+        {
+            ConvertGeneric(typeof(ICollection<>), typeof(Array), new ArraysConverterProvider());
+        }
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
-using EmitMapper.EmitInvoker.Delegates;
+﻿using EmitMapper.EmitInvoker.Delegates;
 using EmitMapper.MappingConfiguration;
 using EmitMapper.MappingConfiguration.MappingOperations;
 using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
+using System;
 
 namespace EmitMapper.Mappers
 {
@@ -60,13 +60,7 @@ namespace EmitMapper.Mappers
             return Map(from, to, null);
         }
 
-        public IMappingConfigurator MappingConfigurator
-        {
-            get
-            {
-                return _mappingConfigurator;
-            }
-        }
+        public IMappingConfigurator MappingConfigurator => _mappingConfigurator;
 
         #region Non-public members
 
@@ -116,23 +110,23 @@ namespace EmitMapper.Mappers
         protected DelegateInvokerFunc_2 _valuesPostProcessor;
 
         internal void Initialize(
-            ObjectMapperManager MapperMannager,
-            Type TypeFrom,
-            Type TypeTo,
+            ObjectMapperManager mapperMannager,
+            Type typeFrom,
+            Type typeTo,
             IMappingConfigurator mappingConfigurator,
             object[] stroredObjects)
         {
-            mapperMannager = MapperMannager;
-            typeFrom = TypeFrom;
-            typeTo = TypeTo;
+            this.mapperMannager = mapperMannager;
+            this.typeFrom = typeFrom;
+            this.typeTo = typeTo;
             _mappingConfigurator = mappingConfigurator;
             StroredObjects = stroredObjects;
             if (_mappingConfigurator != null)
             {
-                _rootOperation = _mappingConfigurator.GetRootMappingOperation(TypeFrom, TypeTo);
+                _rootOperation = _mappingConfigurator.GetRootMappingOperation(typeFrom, typeTo);
                 if (_rootOperation == null)
                 {
-                    _rootOperation = new RootMappingOperation(TypeFrom, TypeTo);
+                    _rootOperation = new RootMappingOperation(typeFrom, typeTo);
                 }
                 var constructor = _rootOperation.TargetConstructor;
                 if (constructor != null)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using EmitMapper.AST;
+﻿using EmitMapper.AST;
 using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
 using EmitMapper.AST.Nodes;
@@ -13,10 +8,15 @@ using EmitMapper.MappingConfiguration;
 using EmitMapper.MappingConfiguration.MappingOperations;
 using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
 using EmitMapper.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace EmitMapper.EmitBuilders
 {
-    class MappingOperationsProcessor
+    internal class MappingOperationsProcessor
     {
         public LocalBuilder LocFrom;
         public LocalBuilder LocTo;

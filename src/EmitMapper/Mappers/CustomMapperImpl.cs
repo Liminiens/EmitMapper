@@ -1,18 +1,18 @@
-﻿using System;
-using EmitMapper.MappingConfiguration;
+﻿using EmitMapper.MappingConfiguration;
+using System;
 
 namespace EmitMapper.Mappers
 {
-    public abstract class CustomMapperImpl: ObjectsMapperBaseImpl
+    public abstract class CustomMapperImpl : ObjectsMapperBaseImpl
     {
         public CustomMapperImpl(
-            ObjectMapperManager mapperMannager, 
-            Type TypeFrom, 
-            Type TypeTo, 
+            ObjectMapperManager mapperMannager,
+            Type TypeFrom,
+            Type TypeTo,
             IMappingConfigurator mappingConfigurator,
-			object[] storedObjects)
+            object[] storedObjects)
         {
-			Initialize(mapperMannager, TypeFrom, TypeTo, mappingConfigurator, storedObjects);
+            Initialize(mapperMannager, TypeFrom, TypeTo, mappingConfigurator, storedObjects);
         }
     }
 }

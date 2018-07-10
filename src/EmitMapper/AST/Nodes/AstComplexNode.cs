@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using EmitMapper.AST.Interfaces;
+﻿using EmitMapper.AST.Interfaces;
+using System.Collections.Generic;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstComplexNode: IAstNode
+    internal class AstComplexNode : IAstNode
     {
         public List<IAstNode> Nodes = new List<IAstNode>();
 
@@ -11,10 +11,7 @@ namespace EmitMapper.AST.Nodes
         {
             foreach (IAstNode node in Nodes)
             {
-                if (node != null)
-                {
-                    node.Compile(context);
-                }
+                node?.Compile(context);
             }
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace EmitMapper.Utils
 {
-    class ThreadSaveCache
+    internal class ThreadSaveCache
     {
         private readonly ConcurrentDictionary<string, object> _cache = new ConcurrentDictionary<string, object>();
 

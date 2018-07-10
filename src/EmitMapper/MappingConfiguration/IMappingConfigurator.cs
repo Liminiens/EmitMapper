@@ -1,11 +1,11 @@
-﻿using System;
-using EmitMapper.Conversion;
+﻿using EmitMapper.Conversion;
 using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
+using System;
 
 namespace EmitMapper.MappingConfiguration
 {
-	public interface IMappingConfigurator
-	{
+    public interface IMappingConfigurator
+    {
         /// <summary>
         /// Get list of mapping operations. Each mapping mapping defines one copieng operation from source to destination. For this operation can be additionally defined the following custom operations: 
         /// - Custom getter which extracts values from source
@@ -17,7 +17,7 @@ namespace EmitMapper.MappingConfiguration
         /// <returns></returns>
 		IMappingOperation[] GetMappingOperations(Type from, Type to);
 
-		IRootMappingOperation GetRootMappingOperation(Type from, Type to);
+        IRootMappingOperation GetRootMappingOperation(Type from, Type to);
 
         /// <summary>
         /// Get unique configuration name to force Emit Mapper create new mapper instead using appropriate cached one.
@@ -25,6 +25,6 @@ namespace EmitMapper.MappingConfiguration
         /// <returns></returns>
 		string GetConfigurationName();
 
-		StaticConvertersManager GetStaticConvertersManager();
-	}
+        StaticConvertersManager GetStaticConvertersManager();
+    }
 }

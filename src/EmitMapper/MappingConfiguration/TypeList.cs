@@ -1,13 +1,13 @@
-﻿using System;
+﻿using EmitMapper.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmitMapper.Utils;
 
 namespace EmitMapper.MappingConfiguration
 {
-    class TypeDictionary<T> where T: class
+    internal class TypeDictionary<T> where T : class
     {
-        class ListElement
+        private class ListElement
         {
             public Type[] types;
             public T value;
@@ -40,7 +40,7 @@ namespace EmitMapper.MappingConfiguration
 
         public override string ToString()
         {
-            return elements.Select(e => e.types.ToCSV("|") + (e.value == null ? "|" : ("|" + e.value) )).ToCSV("||");
+            return elements.Select(e => e.types.ToCSV("|") + (e.value == null ? "|" : ("|" + e.value))).ToCSV("||");
         }
 
         public bool IsTypesInList(Type[] types)
@@ -51,7 +51,7 @@ namespace EmitMapper.MappingConfiguration
         public T GetValue(Type[] types)
         {
             var elem = FindTypes(types);
-            return elem == null ? null : elem.value;
+            return elem?.value;
         }
 
         public void Add(Type[] types, T value)
@@ -69,19 +69,19 @@ namespace EmitMapper.MappingConfiguration
         {
             foreach (var element in elements)
             {
-				bool isAssignable = true;
+                bool isAssignable = true;
                 for (int i = 0; i < element.types.Length; ++i)
                 {
                     if (!IsGeneralType(element.types[i], types[i]))
                     {
-						isAssignable = false;
-						break;
+                        isAssignable = false;
+                        break;
                     }
                 }
-				if (isAssignable)
-				{
-					return element;
-				}
+                if (isAssignable)
+                {
+                    return element;
+                }
             }
             return null;
         }
@@ -96,11 +96,11 @@ namespace EmitMapper.MappingConfiguration
             {
                 if (generalType.IsInterface)
                 {
-                    return 
-                        (type.IsInterface ? new[]{type} : new Type[0]).Concat(type.GetInterfaces())
+                    return
+                        (type.IsInterface ? new[] { type } : new Type[0]).Concat(type.GetInterfaces())
                         .Any(
-                            i => 
-                                i.IsGenericType && 
+                            i =>
+                                i.IsGenericType &&
                                 i.GetGenericTypeDefinition() == generalType
                         );
                 }

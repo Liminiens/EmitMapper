@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using EmitMapper.AST.Helpers;
+﻿using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
 using EmitMapper.AST.Nodes;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 
 namespace EmitMapper.EmitBuilders
 {
-    class BuilderUtils
+    internal class BuilderUtils
     {
         /// <summary>
         /// Copies an argument to local variable

@@ -1,38 +1,27 @@
-﻿using System;
+﻿using EmitMapper.AST.Helpers;
+using EmitMapper.AST.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using EmitMapper.AST.Helpers;
-using EmitMapper.AST.Interfaces;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstCallMethod: IAstRefOrValue
+    internal class AstCallMethod : IAstRefOrValue
     {
-        public MethodInfo MethodInfo;
-        public IAstRefOrAddr InvocationObject;
-        public List<IAstStackItem> Arguments;
-
-		public AstCallMethod(
-			MethodInfo methodInfo,
-			IAstRefOrAddr invocationObject,
+        public AstCallMethod(
+            MethodInfo methodInfo,
+            IAstRefOrAddr invocationObject,
             List<IAstStackItem> arguments)
-		{
-			if (methodInfo == null)
-			{
-				throw new InvalidOperationException("methodInfo is null");
-			}
-			this.MethodInfo = methodInfo;
-			this.InvocationObject = invocationObject;
-			this.Arguments = arguments;
-		}
-
-        public Type ItemType
         {
-            get
-            {
-                return MethodInfo.ReturnType;
-            }
+            MethodInfo = methodInfo ?? throw new InvalidOperationException($"{nameof(methodInfo)} is null");
+            InvocationObject = invocationObject;
+            Arguments = arguments;
         }
+
+        public MethodInfo MethodInfo { get; }
+        public IAstRefOrAddr InvocationObject { get; }
+        public List<IAstStackItem> Arguments { get; }
+        public Type ItemType => MethodInfo.ReturnType;
 
         public virtual void Compile(CompilationContext context)
         {
@@ -40,27 +29,27 @@ namespace EmitMapper.AST.Nodes
         }
     }
 
-    class AstCallMethodRef : AstCallMethod, IAstRef
+    internal class AstCallMethodRef : AstCallMethod, IAstRef
     {
         public AstCallMethodRef(MethodInfo methodInfo, IAstRefOrAddr invocationObject, List<IAstStackItem> arguments)
             : base(methodInfo, invocationObject, arguments)
-		{
-		}
+        {
+        }
 
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
 
-    class AstCallMethodValue : AstCallMethod, IAstValue
+    internal class AstCallMethodValue : AstCallMethod, IAstValue
     {
         public AstCallMethodValue(MethodInfo methodInfo, IAstRefOrAddr invocationObject, List<IAstStackItem> arguments)
-			: base(methodInfo, invocationObject, arguments)
-		{
-		}
-        override public void Compile(CompilationContext context)
+            : base(methodInfo, invocationObject, arguments)
+        {
+        }
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);

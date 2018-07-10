@@ -1,10 +1,10 @@
-﻿using System;
+﻿using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
+using System;
 using System.Collections.Generic;
-using EmitMapper.MappingConfiguration.MappingOperations.Interfaces;
 
 namespace EmitMapper.MappingConfiguration.MappingOperations
 {
-	
+
     /// <summary>
     /// Generates the following code:
     /// var tempSrc = Source.member;
@@ -26,7 +26,7 @@ namespace EmitMapper.MappingConfiguration.MappingOperations
     ///     Destination.member = tempDst;
     /// }
     /// </summary>
-	public class ReadWriteComplex : IComplexOperation, IReadWriteOperation
+    public class ReadWriteComplex : IComplexOperation, IReadWriteOperation
     {
         public bool ShallowCopy { get; set; }
         public MemberDescriptor Source { get; set; }
@@ -39,7 +39,7 @@ namespace EmitMapper.MappingConfiguration.MappingOperations
 
         public override string ToString()
         {
-            return "ReadWriteComplex. Source member:" + Source + " Target member:" + Destination.ToString();
+            return $"ReadWriteComplex. Source member: {Source} Target member: {Destination}";
         }
     }
 }

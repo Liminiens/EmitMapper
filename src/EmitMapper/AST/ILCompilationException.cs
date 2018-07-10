@@ -2,7 +2,7 @@
 
 namespace EmitMapper.AST
 {
-    class ILCompilationException:Exception
+    internal class ILCompilationException : Exception
     {
         public ILCompilationException(string message)
             : base(message)

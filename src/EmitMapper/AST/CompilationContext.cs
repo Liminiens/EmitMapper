@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 
 namespace EmitMapper.AST
 {
-    class CompilationContext
+    internal class CompilationContext
     {
         public readonly ILGenerator ILGenerator;
         public readonly TextWriter OutputCommands;
