@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using EmitMapper.AST;
+﻿using EmitMapper.AST;
 using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
 using EmitMapper.AST.Nodes;
 using EmitMapper.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace EmitMapper.EmitInvoker.Delegates
 {
     public static class DelegateInvoker
     {
-        private static readonly ThreadSaveCache _typesCache = new ThreadSaveCache();
+        private static readonly ThreadSaveCache TypesCache = new ThreadSaveCache();
 
         public static DelegateInvokerBase GetDelegateInvoker(Delegate del)
         {
             var typeName = "EmitMapper.DelegateCaller_" + del.ToString();
 
-            Type callerType = _typesCache.Get<Type>(
+            Type callerType = TypesCache.Get<Type>(
                 typeName,
                 () =>
                 {
@@ -62,7 +62,7 @@ namespace EmitMapper.EmitInvoker.Delegates
             }
             else
             {
-                new EmitMapperException("too many method parameters");
+                throw new EmitMapperException("too many method parameters");
             }
 
             var tb = DynamicAssemblyManager.DefineType(typeName, funcCallerType);
@@ -114,7 +114,7 @@ namespace EmitMapper.EmitInvoker.Delegates
                 "CallAction",
                 MethodAttributes.Public | MethodAttributes.Virtual,
                 null,
-                Enumerable.Range(0, par.Length).Select( i => typeof(object)).ToArray()
+                Enumerable.Range(0, par.Length).Select(i => typeof(object)).ToArray()
             );
 
             new AstComplexNode
