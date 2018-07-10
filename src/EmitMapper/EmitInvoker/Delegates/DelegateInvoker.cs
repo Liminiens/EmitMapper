@@ -35,7 +35,7 @@ namespace EmitMapper.EmitInvoker.Delegates
             );
 
             DelegateInvokerBase result = (DelegateInvokerBase)Activator.CreateInstance(callerType);
-            result._del = del;
+            result.DelegateToInvoke = del;
             return result;
         }
 
@@ -132,7 +132,7 @@ namespace EmitMapper.EmitInvoker.Delegates
                     new AstCastclassRef(
                         AstBuildHelper.ReadFieldRV(
                             new AstReadThis() { ThisType = typeof(DelegateInvokerBase) },
-                            typeof(DelegateInvokerBase).GetField("_del", BindingFlags.Public | BindingFlags.Instance)
+                            typeof(DelegateInvokerBase).GetField("DelegateToInvoke", BindingFlags.Public | BindingFlags.Instance)
                         ),
                         del.GetType()
                     ),
