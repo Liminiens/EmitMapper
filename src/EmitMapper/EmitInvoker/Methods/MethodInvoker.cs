@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using EmitMapper.AST;
+﻿using EmitMapper.AST;
 using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
 using EmitMapper.AST.Nodes;
 using EmitMapper.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace EmitMapper.EmitInvoker.Methods
 {
     public static class MethodInvoker
     {
-        private static ThreadSaveCache _typesCache = new ThreadSaveCache();
+        private static readonly ThreadSaveCache TypesCache = new ThreadSaveCache();
 
         public static MethodInvokerBase GetMethodInvoker(object targetObject, MethodInfo mi)
         {
             var typeName = "EmitMapper.MethodCaller_" + mi.ToString();
 
-            Type callerType = _typesCache.Get<Type>(
+            Type callerType = TypesCache.Get<Type>(
                 typeName,
                 () =>
                 {
@@ -62,7 +62,7 @@ namespace EmitMapper.EmitInvoker.Methods
             }
             else
             {
-                new EmitMapperException("too many method parameters");
+                throw new EmitMapperException("too many method parameters");
             }
 
             var tb = DynamicAssemblyManager.DefineType(typeName, funcCallerType);
