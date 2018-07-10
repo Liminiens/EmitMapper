@@ -87,16 +87,16 @@ namespace EmitMapper.EmitInvoker.Methods
             switch (par.Length)
             {
                 case 0:
-                    actionCallerType = typeof(MethodInvokerFunc_0);
+                    actionCallerType = typeof(MethodInvokerAction_0);
                     break;
                 case 1:
-                    actionCallerType = typeof(MethodInvokerFunc_1);
+                    actionCallerType = typeof(MethodInvokerAction_1);
                     break;
                 case 2:
-                    actionCallerType = typeof(MethodInvokerFunc_2);
+                    actionCallerType = typeof(MethodInvokerAction_2);
                     break;
                 case 3:
-                    actionCallerType = typeof(MethodInvokerFunc_3);
+                    actionCallerType = typeof(MethodInvokerAction_3);
                     break;
                 default:
                     throw new EmitMapperException("too many method parameters");

@@ -47,16 +47,16 @@ namespace EmitMapper.EmitInvoker.Delegates
             switch (par.Length)
             {
                 case 0:
-                    funcCallerType = typeof(DelegateInvokerAction_0);
+                    funcCallerType = typeof(DelegateInvokerFunc_0);
                     break;
                 case 1:
-                    funcCallerType = typeof(DelegateInvokerAction_1);
+                    funcCallerType = typeof(DelegateInvokerFunc_1);
                     break;
                 case 2:
-                    funcCallerType = typeof(DelegateInvokerAction_2);
+                    funcCallerType = typeof(DelegateInvokerFunc_2);
                     break;
                 case 3:
-                    funcCallerType = typeof(DelegateInvokerAction_3);
+                    funcCallerType = typeof(DelegateInvokerFunc_3);
                     break;
                 default:
                     throw new EmitMapperException("too many method parameters");
