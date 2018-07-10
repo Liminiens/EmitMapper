@@ -152,22 +152,22 @@ namespace EmitMapper.Mappers
             if (typeTo.IsGenericType && typeTo.GetGenericTypeDefinition() == typeof(List<>))
             {
                 MethodBuilder methodBuilder = tb.DefineMethod(
-                    "CopyToListInvoke",
+                    nameof(CopyToListInvoke),
                     MethodAttributes.Family | MethodAttributes.Virtual,
                     typeof(object),
                     new[] { typeof(IEnumerable) }
                     );
 
-                InvokeCopyImpl(typeTo, "CopyToList").Compile(new CompilationContext(methodBuilder.GetILGenerator()));
+                InvokeCopyImpl(typeTo, nameof(CopyToList)).Compile(new CompilationContext(methodBuilder.GetILGenerator()));
 
                 methodBuilder = tb.DefineMethod(
-                    "CopyToListScalarInvoke",
+                    nameof(CopyToListScalarInvoke),
                     MethodAttributes.Family | MethodAttributes.Virtual,
                     typeof(object),
                     new[] { typeof(object) }
                     );
 
-                InvokeCopyImpl(typeTo, "CopyToListScalar").Compile(
+                InvokeCopyImpl(typeTo, nameof(CopyToListScalar)).Compile(
                     new CompilationContext(methodBuilder.GetILGenerator())
                     );
             }
