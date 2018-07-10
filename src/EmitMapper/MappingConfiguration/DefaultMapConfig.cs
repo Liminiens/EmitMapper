@@ -51,12 +51,6 @@ namespace EmitMapper.MappingConfiguration
         private List<string> _deepCopyMembers = new List<string>();
 
 		#region Constructors
-
-		static DefaultMapConfig()
-		{
-			_instance = new DefaultMapConfig();
-		}
-
 		public DefaultMapConfig()
 		{
 			Init(this);
@@ -65,16 +59,9 @@ namespace EmitMapper.MappingConfiguration
         }
         #endregion
 
-		private static DefaultMapConfig _instance;
-		public static DefaultMapConfig Instance
-		{
-			get
-			{
-				return _instance;
-			}
-		}
+	    public static DefaultMapConfig Instance { get; } = new DefaultMapConfig();
 
-        #region Configuration methods
+	    #region Configuration methods
 
 
 		/// <summary>

@@ -12,13 +12,7 @@ namespace EmitMapper
     /// </summary>
     public class ObjectMapperManager
     {
-        private static readonly Lazy<ObjectMapperManager> LazyDefaultInstance = new Lazy<ObjectMapperManager>();
-
-        public static ObjectMapperManager DefaultInstance => LazyDefaultInstance.Value;
-
-        public ObjectMapperManager()
-        {
-        }
+        public static readonly ObjectMapperManager DefaultInstance = new ObjectMapperManager();
 
         /// <summary>
         /// Returns a Mapper instance for specified types.
