@@ -1,8 +1,7 @@
 ﻿using System;
-
 namespace EmitMapper.AST.Interfaces
 {
-    interface IAstStackItem: IAstNode
+    internal interface IAstStackItem : IAstNode
     {
         Type ItemType { get; }
     }

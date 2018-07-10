@@ -1,12 +1,12 @@
-﻿using System;
+﻿using EmitMapper.AST.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using EmitMapper.AST.Interfaces;
 
 namespace EmitMapper.AST.Helpers
 {
-    class CompilationHelper
+    internal class CompilationHelper
     {
         public static void EmitCall(
             CompilationContext context,
@@ -18,10 +18,8 @@ namespace EmitMapper.AST.Helpers
             {
                 arguments = new List<IAstStackItem>();
             }
-            if (invocationObject != null)
-            {
-                invocationObject.Compile(context);
-            }
+
+            invocationObject?.Compile(context);
 
             ParameterInfo[] args = methodInfo.GetParameters();
             if (args.Length != arguments.Count)
@@ -64,7 +62,7 @@ namespace EmitMapper.AST.Helpers
         {
             if (type.IsValueType)
             {
-                throw new ILCompilationException("A reference type was expected, but it was: " + type);
+                throw new ILCompilationException($"A reference type was expected, but it was: {type}");
             }
         }
 
@@ -72,7 +70,7 @@ namespace EmitMapper.AST.Helpers
         {
             if (!type.IsValueType)
             {
-                throw new ILCompilationException("A value type was expected, but it was: " + type);
+                throw new ILCompilationException($"A value type was expected, but it was: : {type}");
             }
         }
 

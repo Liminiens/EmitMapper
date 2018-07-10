@@ -1,35 +1,28 @@
-﻿using System;
+﻿using EmitMapper.AST.Interfaces;
+using System;
 using System.Reflection.Emit;
-using EmitMapper.AST.Interfaces;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstValueToAddr: IAstAddr
+    internal class AstValueToAddr : IAstAddr
     {
-        public IAstValue Value;
-        public Type ItemType
-        {
-            get 
-            {
-                return Value.ItemType; 
-            }
-        }
+        public readonly IAstValue Value;
 
         public AstValueToAddr(IAstValue value)
         {
-            this.Value = value;
+            Value = value;
         }
-
+        public Type ItemType => Value.ItemType;
         public void Compile(CompilationContext context)
         {
             LocalBuilder loc = context.ILGenerator.DeclareLocal(ItemType);
             new AstInitializeLocalVariable(loc).Compile(context);
             new AstWriteLocal()
-                {
-                    LocalIndex = loc.LocalIndex,
-                    LocalType = loc.LocalType,
-                    Value = Value
-                }.Compile(context);
+            {
+                LocalIndex = loc.LocalIndex,
+                LocalType = loc.LocalType,
+                Value = Value
+            }.Compile(context);
             new AstReadLocalAddr(loc).Compile(context);
         }
     }

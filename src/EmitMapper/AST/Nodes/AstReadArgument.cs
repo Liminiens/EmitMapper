@@ -1,22 +1,16 @@
-﻿using System;
-using System.Reflection.Emit;
-using EmitMapper.AST.Helpers;
+﻿using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
+using System;
+using System.Reflection.Emit;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstReadArgument : IAstStackItem
+    internal class AstReadArgument : IAstStackItem
     {
         public int ArgumentIndex;
         public Type ArgumentType;
 
-        public Type ItemType
-        {
-            get
-            {
-                return ArgumentType;
-            }
-        }
+        public Type ItemType => ArgumentType;
 
         public virtual void Compile(CompilationContext context)
         {
@@ -41,27 +35,27 @@ namespace EmitMapper.AST.Nodes
         }
     }
 
-    class AstReadArgumentRef : AstReadArgument, IAstRef
+    internal class AstReadArgumentRef : AstReadArgument, IAstRef
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
 
-    class AstReadArgumentValue : AstReadArgument, IAstValue
+    internal class AstReadArgumentValue : AstReadArgument, IAstValue
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }
 
-    class AstReadArgumentAddr : AstReadArgument, IAstAddr
+    internal class AstReadArgumentAddr : AstReadArgument, IAstAddr
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
             context.Emit(OpCodes.Ldarga, ArgumentIndex);

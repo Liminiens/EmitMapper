@@ -1,6 +1,6 @@
 ﻿namespace EmitMapper.AST.Interfaces
 {
-    interface IAstRef : IAstRefOrValue, IAstRefOrAddr
+    internal interface IAstRef : IAstRefOrValue, IAstRefOrAddr
     {
     }
 }

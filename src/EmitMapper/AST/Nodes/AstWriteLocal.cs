@@ -1,11 +1,11 @@
-﻿using System;
-using System.Reflection.Emit;
-using EmitMapper.AST.Helpers;
+﻿using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
+using System;
+using System.Reflection.Emit;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstWriteLocal : IAstNode
+    internal class AstWriteLocal : IAstNode
     {
         public int LocalIndex;
         public Type LocalType;
@@ -19,10 +19,8 @@ namespace EmitMapper.AST.Nodes
         {
             LocalIndex = loc.LocalIndex;
             LocalType = loc.LocalType;
-            this.Value = value;
+            Value = value;
         }
-
-
         public void Compile(CompilationContext context)
         {
             Value.Compile(context);

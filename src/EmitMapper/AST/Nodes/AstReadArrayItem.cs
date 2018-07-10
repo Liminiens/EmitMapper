@@ -1,22 +1,16 @@
-﻿using System;
-using System.Reflection.Emit;
-using EmitMapper.AST.Helpers;
+﻿using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
+using System;
+using System.Reflection.Emit;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstReadArrayItem : IAstStackItem
+    internal class AstReadArrayItem : IAstStackItem
     {
         public IAstRef Array;
         public int Index;
 
-        public Type ItemType
-        {
-            get
-            {
-                return Array.ItemType.GetElementType();
-            }
-        }
+        public Type ItemType => Array.ItemType.GetElementType();
 
         public virtual void Compile(CompilationContext context)
         {
@@ -26,27 +20,27 @@ namespace EmitMapper.AST.Nodes
         }
     }
 
-    class AstReadArrayItemRef : AstReadArrayItem, IAstRef
+    internal class AstReadArrayItemRef : AstReadArrayItem, IAstRef
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
 
-    class AstReadArrayItemValue: AstReadArrayItem, IAstValue
+    internal class AstReadArrayItemValue : AstReadArrayItem, IAstValue
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
             base.Compile(context);
         }
     }
 
-    class AstReadArrayItemAddr : AstReadArrayItem, IAstAddr
+    internal class AstReadArrayItemAddr : AstReadArrayItem, IAstAddr
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsValue(ItemType);
             Array.Compile(context);

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using EmitMapper.AST.Interfaces;
+using EmitMapper.AST.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using EmitMapper.AST.Interfaces;
-using EmitMapper.AST.Nodes;
 
 namespace EmitMapper.AST.Helpers
 {
-    class AstBuildHelper
+    internal class AstBuildHelper
     {
         public static IAstRefOrValue CallMethod(
             MethodInfo methodInfo,
@@ -16,7 +16,7 @@ namespace EmitMapper.AST.Helpers
         {
             if (methodInfo.ReturnType.IsValueType)
             {
-				return new AstCallMethodValue(methodInfo, invocationObject, arguments);
+                return new AstCallMethodValue(methodInfo, invocationObject, arguments);
             }
             else
             {
@@ -29,18 +29,18 @@ namespace EmitMapper.AST.Helpers
             if (argumentType.IsValueType)
             {
                 return new AstReadArgumentValue()
-                           {
-                               ArgumentIndex = argumentIndex,
-                               ArgumentType = argumentType
-                           };
+                {
+                    ArgumentIndex = argumentIndex,
+                    ArgumentType = argumentType
+                };
             }
             else
             {
                 return new AstReadArgumentRef()
-                           {
-                               ArgumentIndex = argumentIndex,
-                               ArgumentType = argumentType
-                           };
+                {
+                    ArgumentIndex = argumentIndex,
+                    ArgumentType = argumentType
+                };
             }
         }
 
@@ -49,37 +49,37 @@ namespace EmitMapper.AST.Helpers
             if (argumentType.IsValueType)
             {
                 return new AstReadArgumentAddr()
-                           {
-                               ArgumentIndex = argumentIndex,
-                               ArgumentType = argumentType
-                           };
+                {
+                    ArgumentIndex = argumentIndex,
+                    ArgumentType = argumentType
+                };
             }
             else
             {
                 return new AstReadArgumentRef()
-                           {
-                               ArgumentIndex = argumentIndex,
-                               ArgumentType = argumentType
-                           };
+                {
+                    ArgumentIndex = argumentIndex,
+                    ArgumentType = argumentType
+                };
             }
         }
-        public static IAstRefOrValue ReadArrayItemRV(IAstRef array, int index)	
+        public static IAstRefOrValue ReadArrayItemRV(IAstRef array, int index)
         {
             if (array.ItemType.IsValueType)
             {
                 return new AstReadArrayItemValue()
-                           {
-                               Array = array,
-                               Index = index
-                           };
+                {
+                    Array = array,
+                    Index = index
+                };
             }
             else
             {
                 return new AstReadArrayItemRef()
-                           {
-                               Array = array,
-                               Index = index
-                           };
+                {
+                    Array = array,
+                    Index = index
+                };
             }
         }
 
@@ -88,18 +88,18 @@ namespace EmitMapper.AST.Helpers
             if (array.ItemType.IsValueType)
             {
                 return new AstReadArrayItemAddr()
-                           {
-                               Array = array,
-                               Index = index
-                           };
+                {
+                    Array = array,
+                    Index = index
+                };
             }
             else
             {
                 return new AstReadArrayItemRef()
-                           {
-                               Array = array,
-                               Index = index
-                           };
+                {
+                    Array = array,
+                    Index = index
+                };
             }
         }
 
@@ -108,18 +108,18 @@ namespace EmitMapper.AST.Helpers
             if (fieldInfo.FieldType.IsValueType)
             {
                 return new AstReadFieldValue()
-                           {
-                               FieldInfo = fieldInfo,
-                               SourceObject = sourceObject
-                           };
+                {
+                    FieldInfo = fieldInfo,
+                    SourceObject = sourceObject
+                };
             }
             else
             {
                 return new AstReadFieldRef()
-                           {
-                               FieldInfo = fieldInfo,
-                               SourceObject = sourceObject
-                           };
+                {
+                    FieldInfo = fieldInfo,
+                    SourceObject = sourceObject
+                };
             }
         }
 
@@ -140,18 +140,18 @@ namespace EmitMapper.AST.Helpers
             if (fieldInfo.FieldType.IsValueType)
             {
                 return new AstReadFieldAddr()
-                           {
-                               FieldInfo = fieldInfo,
-                               SourceObject = sourceObject
-                           };
+                {
+                    FieldInfo = fieldInfo,
+                    SourceObject = sourceObject
+                };
             }
             else
             {
                 return new AstReadFieldRef()
-                           {
-                               FieldInfo = fieldInfo,
-                               SourceObject = sourceObject
-                           };
+                {
+                    FieldInfo = fieldInfo,
+                    SourceObject = sourceObject
+                };
             }
         }
 
@@ -160,18 +160,18 @@ namespace EmitMapper.AST.Helpers
             if (loc.LocalType.IsValueType)
             {
                 return new AstReadLocalValue()
-                           {
-                               LocalType = loc.LocalType,
-                               LocalIndex = loc.LocalIndex
-                           };
+                {
+                    LocalType = loc.LocalType,
+                    LocalIndex = loc.LocalIndex
+                };
             }
             else
             {
                 return new AstReadLocalRef()
-                           {
-                               LocalType = loc.LocalType,
-                               LocalIndex = loc.LocalIndex
-                           };
+                {
+                    LocalType = loc.LocalType,
+                    LocalIndex = loc.LocalIndex
+                };
             }
         }
 
@@ -184,10 +184,10 @@ namespace EmitMapper.AST.Helpers
             else
             {
                 return new AstReadLocalRef()
-                           {
-                               LocalType = loc.LocalType,
-                               LocalIndex = loc.LocalIndex
-                           };
+                {
+                    LocalType = loc.LocalType,
+                    LocalIndex = loc.LocalIndex
+                };
             }
         }
 
@@ -219,18 +219,18 @@ namespace EmitMapper.AST.Helpers
             if (propertyInfo.PropertyType.IsValueType)
             {
                 return new AstReadPropertyValue()
-                           {
-                               SourceObject = sourceObject,
-                               PropertyInfo = propertyInfo
-                           };
+                {
+                    SourceObject = sourceObject,
+                    PropertyInfo = propertyInfo
+                };
             }
             else
             {
                 return new AstReadPropertyRef()
-                           {
-                               SourceObject = sourceObject,
-                               PropertyInfo = propertyInfo
-                           };
+                {
+                    SourceObject = sourceObject,
+                    PropertyInfo = propertyInfo
+                };
             }
         }
 
@@ -239,16 +239,16 @@ namespace EmitMapper.AST.Helpers
             if (thisType.IsValueType)
             {
                 return new AstReadThisAddr()
-                           {
-                               ThisType = thisType
-                           };
+                {
+                    ThisType = thisType
+                };
             }
             else
             {
                 return new AstReadThisRef()
-                           {
-                               ThisType = thisType
-                           };
+                {
+                    ThisType = thisType
+                };
 
             }
         }
@@ -262,7 +262,7 @@ namespace EmitMapper.AST.Helpers
             {
                 src = ReadMemberRA(src, membersChain[i]);
             }
-            result = ReadMemberRV(src, membersChain[membersChain.Length-1]);
+            result = ReadMemberRV(src, membersChain[membersChain.Length - 1]);
             return result;
         }
 
@@ -283,11 +283,11 @@ namespace EmitMapper.AST.Helpers
             }
             else if (memberInfo.MemberType == MemberTypes.Field)
             {
-                return AstBuildHelper.ReadFieldRA(sourceObject, (FieldInfo)memberInfo);
+                return ReadFieldRA(sourceObject, (FieldInfo)memberInfo);
             }
             else
             {
-                return (IAstRef)AstBuildHelper.ReadPropertyRV(sourceObject, (PropertyInfo)memberInfo);
+                return (IAstRef)ReadPropertyRV(sourceObject, (PropertyInfo)memberInfo);
             }
         }
 
@@ -312,16 +312,16 @@ namespace EmitMapper.AST.Helpers
             }
             else if (memberInfo.MemberType == MemberTypes.Field)
             {
-                return AstBuildHelper.ReadFieldRA(sourceObject, (FieldInfo)memberInfo);
+                return ReadFieldRA(sourceObject, (FieldInfo)memberInfo);
             }
             else
             {
                 var pi = (PropertyInfo)memberInfo;
                 if (pi.PropertyType.IsValueType)
                 {
-                    return AstBuildHelper.ReadPropertyRA(sourceObject, (PropertyInfo)memberInfo);
+                    return ReadPropertyRA(sourceObject, (PropertyInfo)memberInfo);
                 }
-                return (IAstRef)AstBuildHelper.ReadPropertyRV(sourceObject, (PropertyInfo)memberInfo);
+                return (IAstRef)ReadPropertyRV(sourceObject, (PropertyInfo)memberInfo);
             }
         }
 
@@ -343,11 +343,11 @@ namespace EmitMapper.AST.Helpers
             }
             else if (memberInfo.MemberType == MemberTypes.Field)
             {
-                return AstBuildHelper.ReadFieldRV(sourceObject, (FieldInfo)memberInfo);
+                return ReadFieldRV(sourceObject, (FieldInfo)memberInfo);
             }
             else
             {
-                return AstBuildHelper.ReadPropertyRV(sourceObject, (PropertyInfo)memberInfo);
+                return ReadPropertyRV(sourceObject, (PropertyInfo)memberInfo);
             }
         }
 
@@ -372,15 +372,15 @@ namespace EmitMapper.AST.Helpers
             if (memberInfo.MemberType == MemberTypes.Field)
             {
                 return new AstWriteField()
-                           {
-                               FieldInfo = (FieldInfo)memberInfo,
-                               TargetObject = targetObject,
-                               Value = value
-                           };
+                {
+                    FieldInfo = (FieldInfo)memberInfo,
+                    TargetObject = targetObject,
+                    Value = value
+                };
             }
             else
             {
-				return new AstWriteProperty(targetObject, value, (PropertyInfo)memberInfo);
+                return new AstWriteProperty(targetObject, value, (PropertyInfo)memberInfo);
             }
         }
     }

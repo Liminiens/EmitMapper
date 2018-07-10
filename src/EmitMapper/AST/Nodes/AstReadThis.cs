@@ -1,20 +1,14 @@
-﻿using System;
-using EmitMapper.AST.Helpers;
+﻿using EmitMapper.AST.Helpers;
 using EmitMapper.AST.Interfaces;
+using System;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstReadThis : IAstRefOrAddr
+    internal class AstReadThis : IAstRefOrAddr
     {
         public Type ThisType;
 
-        public Type ItemType
-        {
-            get
-            {
-                return ThisType;
-            }
-        }
+        public Type ItemType => ThisType;
 
         public AstReadThis()
         {
@@ -31,18 +25,18 @@ namespace EmitMapper.AST.Nodes
         }
     }
 
-    class AstReadThisRef : AstReadThis, IAstRef
+    internal class AstReadThisRef : AstReadThis, IAstRef
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);
         }
     }
 
-    class AstReadThisAddr : AstReadThis, IAstRef
+    internal class AstReadThisAddr : AstReadThis, IAstRef
     {
-        override public void Compile(CompilationContext context)
+        public override void Compile(CompilationContext context)
         {
             CompilationHelper.CheckIsRef(ItemType);
             base.Compile(context);

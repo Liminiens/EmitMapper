@@ -1,6 +1,6 @@
 ﻿namespace EmitMapper.AST.Interfaces
 {
-    interface IAstRefOrValue: IAstStackItem
+    internal interface IAstRefOrValue : IAstStackItem
     {
     }
 }

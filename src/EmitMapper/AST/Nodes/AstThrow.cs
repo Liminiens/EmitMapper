@@ -1,9 +1,9 @@
-﻿using System.Reflection.Emit;
-using EmitMapper.AST.Interfaces;
+﻿using EmitMapper.AST.Interfaces;
+using System.Reflection.Emit;
 
 namespace EmitMapper.AST.Nodes
 {
-    class AstThrow: IAstNode
+    internal class AstThrow : IAstNode
     {
         public IAstRef Exception;
 

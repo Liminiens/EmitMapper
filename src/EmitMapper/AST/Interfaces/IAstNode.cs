@@ -1,6 +1,6 @@
 ﻿namespace EmitMapper.AST.Interfaces
 {
-    interface IAstNode
+    internal interface IAstNode
     {
         void Compile(CompilationContext context);
     }
