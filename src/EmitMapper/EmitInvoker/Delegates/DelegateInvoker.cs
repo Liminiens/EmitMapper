@@ -13,13 +13,13 @@ namespace EmitMapper.EmitInvoker.Delegates
 {
     public static class DelegateInvoker
     {
-        private static readonly ThreadSaveCache TypesCache = new ThreadSaveCache();
+        private static readonly ThreadSafeCache<Type> TypesCache = new ThreadSafeCache<Type>();
 
         public static DelegateInvokerBase GetDelegateInvoker(Delegate del)
         {
             var typeName = "EmitMapper.DelegateCaller_" + del.ToString();
 
-            Type callerType = TypesCache.Get<Type>(
+            Type callerType = TypesCache.Get(
                 typeName,
                 () =>
                 {
