@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using EmitMapper.EmitBuilders;
+﻿using EmitMapper.EmitBuilders;
 using EmitMapper.Mappers;
 using EmitMapper.MappingConfiguration;
+using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 
 namespace EmitMapper
 {
@@ -218,10 +218,10 @@ namespace EmitMapper
 
     public class MapperKey
     {
-        Type _TypeFrom;
-        Type _TypeTo;
-        string _mapperName;
-        int _hash;
+        private Type _TypeFrom;
+        private Type _TypeTo;
+        private string _mapperName;
+        private int _hash;
 
         public MapperKey(Type TypeFrom, Type TypeTo, string mapperName)
         {

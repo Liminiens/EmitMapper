@@ -1,7 +1,7 @@
-﻿using System;
+﻿using EmitMapper.Mappers;
+using System;
 using System.Reflection;
 using System.Reflection.Emit;
-using EmitMapper.Mappers;
 
 namespace EmitMapper
 {
@@ -21,21 +21,19 @@ namespace EmitMapper
         //    }
         //}
 
-        #region Non-public members
-
-        private static AssemblyName assemblyName;
-        private static AssemblyBuilder assemblyBuilder;
-        private static ModuleBuilder moduleBuilder;
+        private static readonly AssemblyName AssemblyName;
+        private static readonly AssemblyBuilder AssemblyBuilder;
+        private static readonly ModuleBuilder ModuleBuilder;
 
         static DynamicAssemblyManager()
         {
-            assemblyName = new AssemblyName("EmitMapperAssembly");
-            assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
-                assemblyName,
+            AssemblyName = new AssemblyName("EmitMapperAssembly");
+            AssemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
+                AssemblyName,
                 AssemblyBuilderAccess.RunAndCollect
                 );
 
-            moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name + ".dll");
+            ModuleBuilder = AssemblyBuilder.DefineDynamicModule(AssemblyName.Name + ".dll");
         }
 
         private static string CorrectTypeName(string typeName)
@@ -51,7 +49,7 @@ namespace EmitMapper
         {
             lock (typeof(DynamicAssemblyManager))
             {
-                return moduleBuilder.DefineType(
+                return ModuleBuilder.DefineType(
                     CorrectTypeName(typeName + Guid.NewGuid().ToString().Replace("-", "")),
                     TypeAttributes.Public,
                     typeof(MapperForClassImpl),
@@ -64,7 +62,7 @@ namespace EmitMapper
         {
             lock (typeof(DynamicAssemblyManager))
             {
-                return moduleBuilder.DefineType(
+                return ModuleBuilder.DefineType(
                     CorrectTypeName(typeName),
                     TypeAttributes.Public,
                     parent,
@@ -72,6 +70,5 @@ namespace EmitMapper
                     );
             }
         }
-        #endregion
     }
 }
