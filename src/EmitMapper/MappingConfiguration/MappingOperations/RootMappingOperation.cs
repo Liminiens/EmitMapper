@@ -5,7 +5,6 @@ namespace EmitMapper.MappingConfiguration.MappingOperations
 {
     public class RootMappingOperation : IRootMappingOperation
     {
-        #region IRootMappingOperation Members
         public Type From { get; set; }
         public Type To { get; set; }
         public Delegate NullSubstitutor { get; set; }
@@ -13,7 +12,6 @@ namespace EmitMapper.MappingConfiguration.MappingOperations
         public Delegate Converter { get; set; }
         public bool ShallowCopy { get; set; }
         public Delegate ValuesPostProcessor { get; set; }
-        #endregion
 
         public RootMappingOperation(Type from, Type to)
         {

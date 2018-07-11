@@ -28,12 +28,12 @@ namespace EmitMapper.EmitBuilders
             IMappingConfigurator mappingConfigurator
             )
         {
-            this._objectsMapperManager = objectsMapperManager;
-            this._from = from;
-            this._to = to;
-            this._typeBuilder = typeBuilder;
-            this.StoredObjects = new List<object>();
-            this._mappingConfigurator = mappingConfigurator;
+            _objectsMapperManager = objectsMapperManager;
+            _from = from;
+            _to = to;
+            _typeBuilder = typeBuilder;
+            StoredObjects = new List<object>();
+            _mappingConfigurator = mappingConfigurator;
         }
 
         public void BuildCopyImplMethod()

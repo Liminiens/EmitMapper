@@ -22,7 +22,7 @@ namespace EmitMapper.Mappers
             object result;
             if (from == null)
             {
-                result = _nullSubstitutor == null ? null : _nullSubstitutor.CallFunc();
+                result = _nullSubstitutor?.CallFunc();
             }
             else if (_converter != null)
             {
@@ -61,8 +61,6 @@ namespace EmitMapper.Mappers
         }
 
         public IMappingConfigurator MappingConfigurator => _mappingConfigurator;
-
-        #region Non-public members
 
         /// <summary>
         /// Mapper manager
@@ -162,7 +160,5 @@ namespace EmitMapper.Mappers
             }
             return CreateTargetInstance();
         }
-
-        #endregion
     }
 }

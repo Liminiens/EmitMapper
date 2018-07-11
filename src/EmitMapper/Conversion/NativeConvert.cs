@@ -11,7 +11,7 @@ namespace EmitMapper.Conversion
 {
     internal class NativeConverter
     {
-        private static Type[] convertTypes = new[]
+        private static readonly HashSet<Type> ConvertTypes = new HashSet<Type>()
         {
             typeof(Boolean),
             typeof(Char),
@@ -37,7 +37,7 @@ namespace EmitMapper.Conversion
                 return false;
             }
 
-            if (convertTypes.Contains(from) && convertTypes.Contains(to))
+            if (ConvertTypes.Contains(from) && ConvertTypes.Contains(to))
             {
                 return true;
             }
@@ -57,12 +57,12 @@ namespace EmitMapper.Conversion
                 return true;
             }
 
-            if (from.IsEnum && convertTypes.Contains(to))
+            if (from.IsEnum && ConvertTypes.Contains(to))
             {
                 return true;
             }
 
-            if (to.IsEnum && convertTypes.Contains(from))
+            if (to.IsEnum && ConvertTypes.Contains(from))
             {
                 return true;
             }
@@ -145,11 +145,7 @@ namespace EmitMapper.Conversion
 
         internal static string ObjectToString(object obj)
         {
-            if (obj == null)
-            {
-                return null;
-            }
-            return obj.ToString();
+            return obj?.ToString();
         }
     }
 }

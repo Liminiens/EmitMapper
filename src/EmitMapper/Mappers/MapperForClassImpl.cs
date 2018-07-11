@@ -5,6 +5,5 @@
     /// </summary>
     public abstract class MapperForClassImpl : ObjectsMapperBaseImpl
     {
-
     }
 }

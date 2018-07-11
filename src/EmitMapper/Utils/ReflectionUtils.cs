@@ -53,19 +53,17 @@ namespace EmitMapper.Utils
 
         public static Type GetMemberType(MemberInfo mi)
         {
-            if (mi is PropertyInfo)
+            switch (mi)
             {
-                return ((PropertyInfo)mi).PropertyType;
+                case PropertyInfo propertyInfo:
+                    return propertyInfo.PropertyType;
+                case FieldInfo fieldInfo:
+                    return fieldInfo.FieldType;
+                case MethodInfo methodInfo:
+                    return methodInfo.ReturnType;
+                default:
+                    return null;
             }
-            else if (mi is FieldInfo)
-            {
-                return ((FieldInfo)mi).FieldType;
-            }
-            else if (mi is MethodInfo)
-            {
-                return ((MethodInfo)mi).ReturnType;
-            }
-            return null;
         }
 
         public static bool HasDefaultConstructor(Type type)
